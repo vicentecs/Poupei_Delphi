@@ -12,24 +12,31 @@ type
     Layout1: TLayout;
     Label7: TLabel;
     imgFechar: TImage;
-    Rectangle2: TRectangle;
+    rectMenuPerfil: TRectangle;
     Image1: TImage;
     Label1: TLabel;
     Image2: TImage;
-    Rectangle1: TRectangle;
+    rectMenuSair: TRectangle;
     Image3: TImage;
     Label2: TLabel;
     Image4: TImage;
-    Rectangle3: TRectangle;
+    rectMenuAssinatura: TRectangle;
     Image5: TImage;
     Label3: TLabel;
     Image6: TImage;
-    Rectangle4: TRectangle;
+    rectMenuSenha: TRectangle;
     Image7: TImage;
     Label4: TLabel;
     Image8: TImage;
+    rectMenuCategoria: TRectangle;
+    Image9: TImage;
+    Label5: TLabel;
+    Image10: TImage;
     procedure imgFecharClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure rectMenuCategoriaClick(Sender: TObject);
+    procedure rectMenuPerfilClick(Sender: TObject);
+    procedure rectMenuSenhaClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -43,6 +50,8 @@ implementation
 
 {$R *.fmx}
 
+uses UnitCategoria, UnitPerfil, UnitSenha;
+
 procedure TFrmConfig.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action := TCloseAction.caFree;
@@ -52,6 +61,30 @@ end;
 procedure TFrmConfig.imgFecharClick(Sender: TObject);
 begin
   close;
+end;
+
+procedure TFrmConfig.rectMenuCategoriaClick(Sender: TObject);
+begin
+  if NOT Assigned(FrmCategoria) then
+    Application.CreateForm(TFrmCategoria, FrmCategoria);
+
+  FrmCategoria.Show;
+end;
+
+procedure TFrmConfig.rectMenuPerfilClick(Sender: TObject);
+begin
+  if NOT Assigned(FrmPerfil) then
+    Application.CreateForm(TFrmPerfil, FrmPerfil);
+
+  FrmPerfil.Show;
+end;
+
+procedure TFrmConfig.rectMenuSenhaClick(Sender: TObject);
+begin
+  if NOT Assigned(FrmSenha) then
+    Application.CreateForm(TFrmSenha, FrmSenha);
+
+  FrmSenha.Show;
 end;
 
 end.

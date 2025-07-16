@@ -38,6 +38,8 @@ object FrmLogin: TFrmLogin
       StyleLookup = ''
       TabOrder = 0
       Text = 'TabBoasVindas'
+      ExplicitSize.cx = 8.000000000000000000
+      ExplicitSize.cy = 8.000000000000000000
       object Layout1: TLayout
         Align = Center
         Size.Width = 286.000000000000000000
@@ -600,6 +602,8 @@ object FrmLogin: TFrmLogin
       StyleLookup = ''
       TabOrder = 0
       Text = 'TabLogin'
+      ExplicitSize.cx = 8.000000000000000000
+      ExplicitSize.cy = 8.000000000000000000
       object Layout2: TLayout
         Align = Center
         Margins.Bottom = 30.000000000000000000
@@ -1113,7 +1117,7 @@ object FrmLogin: TFrmLogin
           Stroke.Kind = None
           XRadius = 6.000000000000000000
           YRadius = 6.000000000000000000
-          object SpeedButton2: TSpeedButton
+          object btnLogin: TSpeedButton
             Align = Client
             StyledSettings = [Family]
             Size.Width = 286.000000000000000000
@@ -1124,29 +1128,35 @@ object FrmLogin: TFrmLogin
             TextSettings.Font.StyleExt = {00060000000000000004000000}
             TextSettings.FontColor = claWhite
             TextSettings.Trimming = None
+            OnClick = btnLoginClick
           end
         end
         object Edit1: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Bottom
           TabOrder = 3
+          TextSettings.Font.Size = 14.000000000000000000
           Position.Y = 250.000000000000000000
           Margins.Bottom = 30.000000000000000000
           Size.Width = 286.000000000000000000
           Size.Height = 32.000000000000000000
           Size.PlatformDefault = False
           TextPrompt = 'E-mail'
+          StyledSettings = [Family, Style, FontColor]
         end
         object Edit2: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Bottom
           TabOrder = 2
+          Password = True
+          TextSettings.Font.Size = 14.000000000000000000
           Position.Y = 312.000000000000000000
           Margins.Bottom = 30.000000000000000000
           Size.Width = 286.000000000000000000
           Size.Height = 32.000000000000000000
           Size.PlatformDefault = False
           TextPrompt = 'Senha'
+          StyledSettings = [Family, Style, FontColor]
         end
       end
       object lblNovaConta: TLabel
@@ -1178,6 +1188,8 @@ object FrmLogin: TFrmLogin
       StyleLookup = ''
       TabOrder = 0
       Text = 'TabNovaConta'
+      ExplicitSize.cx = 8.000000000000000000
+      ExplicitSize.cy = 8.000000000000000000
       object Layout3: TLayout
         Align = Center
         Size.Width = 286.000000000000000000
@@ -1707,45 +1719,55 @@ object FrmLogin: TFrmLogin
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Bottom
           TabOrder = 5
+          TextSettings.Font.Size = 14.000000000000000000
           Position.Y = 170.000000000000000000
           Margins.Bottom = 30.000000000000000000
           Size.Width = 286.000000000000000000
           Size.Height = 32.000000000000000000
           Size.PlatformDefault = False
           TextPrompt = 'Nome completo'
+          StyledSettings = [Family, Style, FontColor]
         end
         object Edit4: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Bottom
           TabOrder = 3
+          Password = True
+          TextSettings.Font.Size = 14.000000000000000000
           Position.Y = 294.000000000000000000
           Margins.Bottom = 30.000000000000000000
           Size.Width = 286.000000000000000000
           Size.Height = 32.000000000000000000
           Size.PlatformDefault = False
           TextPrompt = 'Informe uma senha'
+          StyledSettings = [Family, Style, FontColor]
         end
         object Edit5: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Bottom
           TabOrder = 4
+          TextSettings.Font.Size = 14.000000000000000000
           Position.Y = 232.000000000000000000
           Margins.Bottom = 30.000000000000000000
           Size.Width = 286.000000000000000000
           Size.Height = 32.000000000000000000
           Size.PlatformDefault = False
           TextPrompt = 'E-mail'
+          StyledSettings = [Family, Style, FontColor]
         end
         object Edit6: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Bottom
           TabOrder = 2
+          Password = True
+          TextSettings.Font.Size = 14.000000000000000000
           Position.Y = 356.000000000000000000
           Margins.Bottom = 30.000000000000000000
           Size.Width = 286.000000000000000000
           Size.Height = 32.000000000000000000
           Size.PlatformDefault = False
           TextPrompt = 'Confirme sua senha'
+          StyledSettings = [Family, Style, FontColor]
         end
       end
       object Label5: TLabel

@@ -61,6 +61,11 @@ object FrmLancamento: TFrmLancamento
           FileName = 'D:\Poupei\Mobile\Images\back.png'
         end>
       Align = Left
+      Margins.Left = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
       OnClick = imgFecharClick
     end
   end

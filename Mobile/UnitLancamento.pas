@@ -6,7 +6,8 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
   FMX.Layouts, FMX.Controls.Presentation, FMX.StdCtrls, FMX.ListView.Types,
-  FMX.ListView.Appearances, FMX.ListView.Adapters.Base, FMX.ListView;
+  FMX.ListView.Appearances, FMX.ListView.Adapters.Base, FMX.ListView,
+  uLoading;
 
 type
   TFrmLancamento = class(TForm)
@@ -34,6 +35,7 @@ type
     procedure AddLancamentoLv(id_lancamento: integer; descricao, categoria,
       dt: string; valor: double);
     procedure ListarLancamentos;
+    procedure TerminateLancamentos(Sender: TObject);
     { Private declarations }
   public
     { Public declarations }
@@ -79,15 +81,35 @@ begin
   close;
 end;
 
+procedure TFrmLancamento.TerminateLancamentos(Sender: TObject);
+begin
+  TLoading.Hide;
+
+  // Se deu erro na thread
+  if Assigned(TThread(Sender).FatalException) then
+  begin
+    showmessage(Exception(TThread(sender).FatalException).Message);
+    exit;
+  end;
+
+  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+end;
+
 procedure TFrmLancamento.ListarLancamentos;
 begin
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+  TLoading.Show(FrmLancamento);
+
+  TLoading.ExecuteThread(procedure
+  begin
+    Sleep(2000); // Simulando acesso ao servidor...
+  end,
+  TerminateLancamentos);
 end;
 
 

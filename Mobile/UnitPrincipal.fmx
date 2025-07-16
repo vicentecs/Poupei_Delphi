@@ -1026,7 +1026,7 @@ object FrmPrincipal: TFrmPrincipal
           OnClick = imgAbaConfigClick
         end
       end
-      object Image5: TImage
+      object imgAdd: TImage
         MultiResBitmap.Height = 64
         MultiResBitmap.Width = 64
         MultiResBitmap = <
@@ -1122,6 +1122,7 @@ object FrmPrincipal: TFrmPrincipal
         Size.Width = 68.000000000000000000
         Size.Height = 55.000000000000000000
         Size.PlatformDefault = False
+        OnClick = imgAddClick
       end
     end
   end

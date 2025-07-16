@@ -27,7 +27,7 @@ object FrmConfig: TFrmConfig
       TextSettings.Font.StyleExt = {00060000000000000004000000}
       TextSettings.FontColor = xFF4B4B4B
       TextSettings.HorzAlign = Center
-      Text = 'Lan'#231'amentos'
+      Text = 'Configura'#231#245'es'
       TabOrder = 2
     end
     object imgFechar: TImage
@@ -60,10 +60,15 @@ object FrmConfig: TFrmConfig
           FileName = 'D:\Poupei\Mobile\Images\back.png'
         end>
       Align = Left
+      Margins.Left = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
       OnClick = imgFecharClick
     end
   end
-  object Rectangle2: TRectangle
+  object rectMenuPerfil: TRectangle
     Align = Top
     Fill.Color = claWhite
     Position.Y = 50.000000000000000000
@@ -72,6 +77,7 @@ object FrmConfig: TFrmConfig
     Size.Height = 70.000000000000000000
     Size.PlatformDefault = False
     Stroke.Color = xFFE6E6E6
+    OnClick = rectMenuPerfilClick
     object Image1: TImage
       MultiResBitmap.Height = 64
       MultiResBitmap.Width = 64
@@ -174,10 +180,10 @@ object FrmConfig: TFrmConfig
       Size.PlatformDefault = False
     end
   end
-  object Rectangle1: TRectangle
+  object rectMenuSair: TRectangle
     Align = Top
     Fill.Color = claWhite
-    Position.Y = 260.000000000000000000
+    Position.Y = 330.000000000000000000
     Sides = [Bottom]
     Size.Width = 400.000000000000000000
     Size.Height = 70.000000000000000000
@@ -268,10 +274,10 @@ object FrmConfig: TFrmConfig
       Size.PlatformDefault = False
     end
   end
-  object Rectangle3: TRectangle
+  object rectMenuAssinatura: TRectangle
     Align = Top
     Fill.Color = claWhite
-    Position.Y = 190.000000000000000000
+    Position.Y = 260.000000000000000000
     Sides = [Bottom]
     Size.Width = 400.000000000000000000
     Size.Height = 70.000000000000000000
@@ -382,7 +388,7 @@ object FrmConfig: TFrmConfig
       Size.PlatformDefault = False
     end
   end
-  object Rectangle4: TRectangle
+  object rectMenuSenha: TRectangle
     Align = Top
     Fill.Color = claWhite
     Position.Y = 120.000000000000000000
@@ -391,6 +397,7 @@ object FrmConfig: TFrmConfig
     Size.Height = 70.000000000000000000
     Size.PlatformDefault = False
     Stroke.Color = xFFE6E6E6
+    OnClick = rectMenuSenhaClick
     object Image7: TImage
       MultiResBitmap.Height = 64
       MultiResBitmap.Width = 64
@@ -458,6 +465,87 @@ object FrmConfig: TFrmConfig
       TabOrder = 2
     end
     object Image8: TImage
+      MultiResBitmap.Height = 32
+      MultiResBitmap = <
+        item
+          Width = 32
+          Height = 32
+          PNG = {
+            89504E470D0A1A0A0000000D4948445200000020000000200806000000737A7A
+            F40000000473424954080808087C086488000000F3494441545885EDD7310AC2
+            3014C6F17FD5451074501737C10338EB05BCB07A177171F214AD435F3060115F
+            DEA72898A5214DFAFD48218FC08FB5EA1BC2E7D69760BC1F59030BEB1F801A68
+            22809E737E933D77B63EB4137DC7DC0AB8D2FE82A12156C0F9538084B828115E
+            801C510290224A01324404204144016184029023665E840A508C50028A106A40
+            8E980023432C8153D7646F2DF0B454379E56CE8138B4B2E00DED0E343676CCDE
+            3D2C7857781ADBDB7867D9560152F81618BF1AAE0214872B00A1F028201C1E01
+            48C24B01B2F0128034DC0B908783EF286E68EF05B270F01FC535F75D0B877B5B
+            0A9E22BC9AFDDB0DF9C8577CB25FC0810000000049454E44AE426082}
+          FileName = 'D:\Poupei\Mobile\Images\mais.png'
+        end>
+      Align = Right
+      HitTest = False
+      Opacity = 0.500000000000000000
+      Margins.Right = 5.000000000000000000
+      Position.X = 363.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 70.000000000000000000
+      Size.PlatformDefault = False
+    end
+  end
+  object rectMenuCategoria: TRectangle
+    Align = Top
+    Fill.Color = claWhite
+    Position.Y = 190.000000000000000000
+    Sides = [Bottom]
+    Size.Width = 400.000000000000000000
+    Size.Height = 70.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Color = xFFE6E6E6
+    OnClick = rectMenuCategoriaClick
+    object Image9: TImage
+      MultiResBitmap.Height = 64
+      MultiResBitmap.Width = 64
+      MultiResBitmap = <
+        item
+          Width = 64
+          Height = 64
+          PNG = {
+            89504E470D0A1A0A0000000D4948445200000040000000400806000000AA6971
+            DE0000000473424954080808087C0864880000011949444154789CEDD8B14A03
+            4110C6F16FB60AC6B4BE81AD7DCEC6CA3320880F60A1A50FA5D7E4011204B94E
+            945C1EC7E224D8B86313507413214690DBFFAF9C197677B65896910000000020
+            43B62A71560F0B375DB8CB8287F1E464F6F4D362E775B1F7265DBB7C7FBBC7DC
+            8CB9CCCC9F251B4FCA7993AC49054FEF8B61085E4B1A2C430BC946D3B2795CB5
+            D9717DD0EFA95F4B3AFCF5C9B7AF8DD1CABB5133FF9A08A9EA10E2A53E9A97A4
+            1DC9AFD6EDD0F3DD23FDCFE62569B0ECE99BE4057493792A9ABC8018C3ADA4F6
+            536821D9CDBAE55FEDE541D26CD3E3FDB13646AB5289EC1F41000000E42AFBAF
+            30F3805435F3804E621E50A512D93F82000000C855F65F61E601A96AE6019DC4
+            3CA04A25B27F0401000000204BEF315DDE1CBA6083210000000049454E44AE42
+            6082}
+          FileName = 'D:\Poupei\Mobile\Images\list.png'
+        end>
+      Align = Left
+      HitTest = False
+      Margins.Left = 10.000000000000000000
+      Position.X = 10.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 70.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object Label5: TLabel
+      Align = Client
+      StyledSettings = [Family, Style]
+      Margins.Left = 10.000000000000000000
+      Size.Width = 311.000000000000000000
+      Size.Height = 70.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Size = 16.000000000000000000
+      TextSettings.FontColor = xFF4B4B4B
+      Text = 'Categorias'
+      TabOrder = 2
+    end
+    object Image10: TImage
       MultiResBitmap.Height = 32
       MultiResBitmap = <
         item

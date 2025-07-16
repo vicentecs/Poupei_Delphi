@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.TabControl,
   FMX.Objects, FMX.Layouts, FMX.Controls.Presentation, FMX.StdCtrls,
   FMX.ListView.Types, FMX.ListView.Appearances, FMX.ListView.Adapters.Base,
-  FMX.ListView;
+  FMX.ListView, uLoading;
 
 type
   TFrmPrincipal = class(TForm)
@@ -34,7 +34,7 @@ type
     rectBottomAbas: TRectangle;
     rectAbas: TRectangle;
     Layout3: TLayout;
-    Image5: TImage;
+    imgAdd: TImage;
     imgAbaHome: TImage;
     imgAbaLanc: TImage;
     imgAbaConfig: TImage;
@@ -42,10 +42,12 @@ type
     procedure FormShow(Sender: TObject);
     procedure Label8Click(Sender: TObject);
     procedure imgAbaConfigClick(Sender: TObject);
+    procedure imgAddClick(Sender: TObject);
   private
     procedure AddLancamentoLv(id_lancamento: integer; descricao,
                             categoria, dt: string; valor: double);
     procedure ListarUltLancamentos;
+    procedure TerminateLancamentos(Sender: TObject);
     { Private declarations }
   public
     { Public declarations }
@@ -58,7 +60,7 @@ implementation
 
 {$R *.fmx}
 
-uses UnitLancamento, UnitConfig;
+uses UnitLancamento, UnitConfig, UnitLancamentoCad;
 
 procedure TFrmPrincipal.AddLancamentoLv(id_lancamento: integer;
                                         descricao, categoria,
@@ -85,15 +87,35 @@ begin
   FrmLancamento.Show;
 end;
 
+procedure TFrmPrincipal.TerminateLancamentos(Sender: TObject);
+begin
+  TLoading.Hide;
+
+  // Se deu erro na thread
+  if Assigned(TThread(Sender).FatalException) then
+  begin
+    showmessage(Exception(TThread(sender).FatalException).Message);
+    exit;
+  end;
+
+  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+end;
+
 procedure TFrmPrincipal.ListarUltLancamentos;
 begin
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+  TLoading.Show(FrmPrincipal);
+
+  TLoading.ExecuteThread(procedure
+  begin
+    Sleep(1000); // Simulando acesso ao servidor...
+  end,
+  TerminateLancamentos);
 end;
 
 procedure TFrmPrincipal.FormShow(Sender: TObject);
@@ -107,6 +129,14 @@ begin
     Application.CreateForm(TFrmConfig, FrmConfig);
 
   FrmConfig.Show;
+end;
+
+procedure TFrmPrincipal.imgAddClick(Sender: TObject);
+begin
+  if NOT Assigned(FrmLancamentoCad) then
+    Application.CreateForm(TFrmLancamentoCad, FrmLancamentoCad);
+
+  FrmLancamentoCad.Show;
 end;
 
 end.
