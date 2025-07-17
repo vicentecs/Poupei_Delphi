@@ -1,0 +1,83 @@
+
+CREATE TABLE USUARIO(
+    ID_USUARIO  INT NOT NULL PRIMARY KEY,
+    NOME        VARCHAR(100),    
+    EMAIL       VARCHAR(100),
+    SENHA       VARCHAR(100),
+    DT_CADASTRO TIMESTAMP,
+    STATUS      VARCHAR(20) /* "TESTE", "ATIVO", "INATIVO" */
+);
+
+create generator gen_usuario_id;
+
+CREATE TRIGGER TR_USUARIO FOR USUARIO
+ACTIVE BEFORE INSERT POSITION 0
+AS
+BEGIN
+    new.ID_USUARIO =gen_id(gen_usuario_id, 1);
+END;
+
+
+/******************************************************/
+
+
+CREATE TABLE CATEGORIA(
+    ID_CATEGORIA  INT NOT NULL PRIMARY KEY,
+    DESCRICAO        VARCHAR(100),
+    ID_USUARIO    INT
+);
+
+create generator gen_categoria_id;
+
+CREATE TRIGGER TR_CATEGORIA FOR CATEGORIA
+ACTIVE BEFORE INSERT POSITION 0
+AS
+BEGIN
+    new.ID_CATEGORIA =gen_id(gen_categoria_id, 1);
+END;
+
+ALTER TABLE CATEGORIA
+ADD FOREIGN KEY (ID_USUARIO)
+REFERENCES USUARIO(ID_USUARIO);
+
+
+
+/******************************************************/
+
+
+CREATE TABLE LANCAMENTO(
+    ID_LANCAMENTO  INT NOT NULL PRIMARY KEY,
+    DESCRICAO     VARCHAR(100),
+    VALOR         DECIMAL(12,2),
+    TIPO          CHAR(1), /* "R" ou "D" */
+    ID_CATEGORIA  INT,
+    DT_LANCAMENTO DATE,
+    ID_USUARIO    INT
+);
+
+create generator gen_lancamento_id;
+
+CREATE TRIGGER TR_LANCAMENTO FOR LANCAMENTO
+ACTIVE BEFORE INSERT POSITION 0
+AS
+BEGIN
+    new.ID_LANCAMENTO =gen_id(gen_lancamento_id, 1);
+END;
+
+ALTER TABLE LANCAMENTO
+ADD FOREIGN KEY (ID_CATEGORIA)
+REFERENCES CATEGORIA(ID_CATEGORIA);
+
+ALTER TABLE LANCAMENTO
+ADD FOREIGN KEY (ID_USUARIO)
+REFERENCES USUARIO(ID_USUARIO);
+
+
+/******************************************************/
+
+
+
+
+
+
+

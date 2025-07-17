@@ -1,0 +1,75 @@
+
+FIGMA
+----------------------------------------
+Projeto no Figma:
+https://www.figma.com/design/2WaaHpSW31FNLf91eT6iNu/Poupei?node-id=0-1&t=PKiVCyVOzkF25Z75-1
+
+
+FERRAMENTAS
+----------------------------------------
+
+1. Horse (Win)
+Framework leve e rápido para criação de APIs REST em Delphi.
+Download: https://github.com/HashLoad/horse
+
+ 
+2. Jhonson (Middleware) (Win)
+Middleware usado em conjunto com o Horse para enviar e receber dados em formato JSON.
+Download: https://github.com/HashLoad/jhonson
+
+
+3. Horse-CORS (Middleware) (Win)
+Middleware que habilita o suporte a CORS (Cross-Origin Resource Sharing). Essencial quando a API será acessada por aplicações frontend (como apps ou páginas web).
+Download: https://github.com/HashLoad/horse-cors
+
+
+4. horse-jwt (Middleware) (Win)
+Middleware para autenticação baseada em tokens JWT (JSON Web Token). Permite proteger rotas e validar usuários autenticados.
+Download: https://github.com/HashLoad/horse-jwt
+
+
+5. delphi-jose-jwt (Middleware) (Win)
+Biblioteca para gerar e validar tokens JWT em Delphi. Usada pelo horse-jwt internamente.
+Download: https://github.com/paolo-rossi/delphi-jose-jwt
+
+
+6. RESTRequest4Delphi (Win, Android, iOS)
+Ferramenta para criação de requisições HTTP para Delphi. Facilita chamadas para APIs externas com suporte a headers, body, autenticação, etc.
+Download: https://github.com/viniciussanchez/RESTRequest4Delphi
+
+
+7. Dataset Serialize (Win, Android, iOS)
+Ajuda a converter datasets Delphi em JSON. Permite enviar e receber dados estruturados entre frontend e backend.
+Download: https://github.com/viniciussanchez/dataset-serialize
+
+
+8. Dataset Serialize Adapter (para RESTRequest4Delphi) (Win, Android, iOS)
+Adaptador para usar o Dataset Serialize integrado ao RESTRequest4Delphi. Facilita envio de datasets como JSON via REST.
+Download: https://github.com/viniciussanchez/dataset-serialize-adapter-restrequest4delphi
+
+
+9. SQLite Studio
+Interface gráfica para criar e gerenciar bancos SQLite.
+Download: https://sqlitestudio.pl
+
+
+10. IBExpert (versão personal - free)
+Ferramenta profissional para gerenciar bancos Firebird.
+Download: https://www.ibexpert.net/downloadcenter
+
+
+11. Postman
+Ferramenta para testar e consumir APIs REST.
+Download: https://www.postman.com/downloads
+
+
+12. Firebird
+Gerenciador de banco de dados como o Mysql, Postgres, etc.
+Download: https://github.com/FirebirdSQL/firebird/releases/download/v3.0.13/Firebird-3.0.13.33818-0-Win32.exe
+
+
+VIDEOS EXTRAS
+----------------------------------------
+Como instalar o SDK Android no Delphi:
+https://youtu.be/vhs4MelK5vc?si=hEvx6LtHj_qKAldI
+
