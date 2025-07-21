@@ -315,6 +315,13 @@
             <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="Utils\uLoading.pas"/>
+        <DCCReference Include="Utils\uSession.pas"/>
+        <DCCReference Include="DataModules\Dm.Global.pas">
+            <Form>DmGlobal</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Utils\uFunctions.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

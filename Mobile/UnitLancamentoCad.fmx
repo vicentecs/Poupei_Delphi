@@ -10,6 +10,7 @@ object FrmLancamentoCad: TFrmLancamentoCad
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnClose = FormClose
+  OnShow = FormShow
   DesignerMasterStyle = 3
   object Layout1: TLayout
     Align = Top
@@ -107,6 +108,7 @@ object FrmLancamentoCad: TFrmLancamentoCad
       Size.Width = 32.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
+      OnClick = imgSalvarClick
     end
   end
   object Layout2: TLayout
@@ -118,7 +120,7 @@ object FrmLancamentoCad: TFrmLancamentoCad
     Size.Height = 585.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
-    object Edit1: TEdit
+    object edtDescricao: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       Align = Top
       TabOrder = 0
@@ -137,7 +139,7 @@ object FrmLancamentoCad: TFrmLancamentoCad
       Size.Height = 40.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
-      object Edit2: TEdit
+      object edtValor: TEdit
         Touch.InteractiveGestures = [LongTap, DoubleTap]
         Align = Client
         TabOrder = 0
@@ -159,8 +161,9 @@ object FrmLancamentoCad: TFrmLancamentoCad
         Stroke.Color = xFFE6E6E6
         XRadius = 6.000000000000000000
         YRadius = 6.000000000000000000
-        object Label1: TLabel
+        object lblReceita: TLabel
           StyledSettings = [Family, Style]
+          HitTest = True
           Position.X = 15.000000000000000000
           Position.Y = 16.000000000000000000
           Size.Width = 59.000000000000000000
@@ -170,11 +173,13 @@ object FrmLancamentoCad: TFrmLancamentoCad
           TextSettings.FontColor = xFF4EB939
           Text = 'Receita'
           TabOrder = 3
+          OnClick = lblReceitaClick
         end
-        object Label2: TLabel
+        object lblDespesa: TLabel
           StyledSettings = [Family, Style]
+          HitTest = True
           Position.X = 82.000000000000000000
-          Position.Y = 16.000000000000000000
+          Position.Y = 17.000000000000000000
           Size.Width = 70.000000000000000000
           Size.Height = 19.000000000000000000
           Size.PlatformDefault = False
@@ -182,10 +187,11 @@ object FrmLancamentoCad: TFrmLancamentoCad
           TextSettings.FontColor = xFF959595
           Text = 'Despesa'
           TabOrder = 2
+          OnClick = lblDespesaClick
         end
       end
     end
-    object ComboBox1: TComboBox
+    object cmbCategoria: TComboBox
       Align = Top
       Items.Strings = (
         'Farm'#225'cia'
@@ -198,7 +204,7 @@ object FrmLancamentoCad: TFrmLancamentoCad
       Size.PlatformDefault = False
       TabOrder = 2
     end
-    object DateEdit1: TDateEdit
+    object dtLanc: TDateEdit
       Date = 45853.000000000000000000
       Align = Top
       Margins.Top = 20.000000000000000000

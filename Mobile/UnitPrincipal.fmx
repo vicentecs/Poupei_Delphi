@@ -288,7 +288,7 @@ object FrmPrincipal: TFrmPrincipal
           Text = 'Saldo do M'#234's'
           TabOrder = 2
         end
-        object Label2: TLabel
+        object lblSaldo: TLabel
           StyledSettings = [Family]
           Position.X = 31.000000000000000000
           Position.Y = 36.000000000000000000
@@ -497,7 +497,7 @@ object FrmPrincipal: TFrmPrincipal
             Text = 'Receitas'
             TabOrder = 2
           end
-          object Label4: TLabel
+          object lblTotRec: TLabel
             StyledSettings = [Family]
             Position.X = 58.000000000000000000
             Position.Y = 21.000000000000000000
@@ -698,7 +698,7 @@ object FrmPrincipal: TFrmPrincipal
             Text = 'Despesas'
             TabOrder = 2
           end
-          object Label6: TLabel
+          object lblTotDesp: TLabel
             StyledSettings = [Family]
             Position.X = 58.000000000000000000
             Position.Y = 21.000000000000000000
@@ -902,6 +902,7 @@ object FrmPrincipal: TFrmPrincipal
           Size.Width = 32.000000000000000000
           Size.Height = 32.000000000000000000
           Size.PlatformDefault = False
+          OnClick = imgAbaHomeClick
         end
         object imgAbaLanc: TImage
           MultiResBitmap.Height = 64

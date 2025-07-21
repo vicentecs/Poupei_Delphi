@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.TabControl,
   FMX.Objects, FMX.Controls.Presentation, FMX.StdCtrls, FMX.Layouts, FMX.Edit,
-  uLoading;
+  uLoading, uSession;
 
 type
   TFrmLogin = class(TForm)
@@ -26,25 +26,26 @@ type
     Label2: TLabel;
     Rectangle2: TRectangle;
     btnLogin: TSpeedButton;
-    Edit1: TEdit;
-    Edit2: TEdit;
+    edtEmail: TEdit;
+    edtSenha: TEdit;
     lblNovaConta: TLabel;
     Layout3: TLayout;
     Image3: TImage;
     Label4: TLabel;
     Rectangle3: TRectangle;
-    SpeedButton3: TSpeedButton;
-    Edit3: TEdit;
-    Edit4: TEdit;
+    btnCriarConta: TSpeedButton;
+    edtContaNome: TEdit;
+    EdtContaSenha: TEdit;
     Label5: TLabel;
-    Edit5: TEdit;
-    Edit6: TEdit;
+    EdtContaEmail: TEdit;
+    EdtContaSenha2: TEdit;
     procedure btnAcessarLoginClick(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure lblNovaContaClick(Sender: TObject);
     procedure Label5Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnLoginClick(Sender: TObject);
+    procedure btnCriarContaClick(Sender: TObject);
   private
     procedure OpenMainForm;
     procedure TerminateLogin(Sender: TObject);
@@ -60,7 +61,7 @@ implementation
 
 {$R *.fmx}
 
-uses UnitPrincipal;
+uses UnitPrincipal, Dm.Global;
 
 procedure TFrmLogin.btnAcessarLoginClick(Sender: TObject);
 begin
@@ -86,7 +87,32 @@ begin
     exit;
   end;
 
+  // Login valido...
+  TSession.id_usuario := DmGlobal.TabUsuario.FieldByName('id_usuario').AsInteger;
+  TSession.nome := DmGlobal.TabUsuario.FieldByName('nome').AsString;
+  TSession.email := DmGlobal.TabUsuario.FieldByName('email').AsString;
+  TSession.token := DmGlobal.TabUsuario.FieldByName('token').AsString;
+  TSession.status := '??????';
+
   OpenMainForm;
+end;
+
+procedure TFrmLogin.btnCriarContaClick(Sender: TObject);
+begin
+  if EdtContaSenha.Text <> EdtContaSenha2.Text then
+  begin
+    showmessage('As senhas~não conferem. Digite novamente');
+    exit;
+  end;
+
+  TLoading.Show(FrmLogin);
+
+  TLoading.ExecuteThread(procedure
+  begin
+
+    DmGlobal.CriarConta(edtContaNome.Text, edtContaEmail.Text, edtSenha.Text);
+  end,
+  TerminateLogin);
 end;
 
 procedure TFrmLogin.btnLoginClick(Sender: TObject);
@@ -95,7 +121,8 @@ begin
 
   TLoading.ExecuteThread(procedure
   begin
-    //Sleep(1000); // Simulando acesso ao servidor...
+
+    DmGlobal.Login(edtEmail.Text, edtSenha.Text);
   end,
   TerminateLogin);
 end;

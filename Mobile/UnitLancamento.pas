@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
   FMX.Layouts, FMX.Controls.Presentation, FMX.StdCtrls, FMX.ListView.Types,
   FMX.ListView.Appearances, FMX.ListView.Adapters.Base, FMX.ListView,
-  uLoading;
+  uLoading, System.StrUtils, System.DateUtils, uFunctions;
 
 type
   TFrmLancamento = class(TForm)
@@ -15,27 +15,35 @@ type
     imgFechar: TImage;
     Label7: TLabel;
     Rectangle2: TRectangle;
-    Label8: TLabel;
+    lblData: TLabel;
     rectMeses: TRectangle;
-    Image2: TImage;
-    Image3: TImage;
+    imgPrior: TImage;
+    imgNext: TImage;
     rectAbas: TRectangle;
     Layout2: TLayout;
     Label1: TLabel;
-    Label2: TLabel;
+    lblTotRec: TLabel;
     Label3: TLabel;
-    Label4: TLabel;
+    lblTotDesp: TLabel;
     Label5: TLabel;
-    Label6: TLabel;
+    lblSaldo: TLabel;
     lvLancamentos: TListView;
+    imgAdd: TImage;
     procedure FormShow(Sender: TObject);
     procedure imgFecharClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure imgPriorClick(Sender: TObject);
+    procedure imgNextClick(Sender: TObject);
+    procedure imgAddClick(Sender: TObject);
   private
-    procedure AddLancamentoLv(id_lancamento: integer; descricao, categoria,
-      dt: string; valor: double);
+    FData: TDateTime;
+    procedure AddLancamentoLv(id_lancamento: integer;
+                              descricao, categoria,
+                              dt, tipo: string;
+                              valor: double);
     procedure ListarLancamentos;
     procedure TerminateLancamentos(Sender: TObject);
+    procedure NavegacaoMes(param: integer);
     { Private declarations }
   public
     { Public declarations }
@@ -48,10 +56,12 @@ implementation
 
 {$R *.fmx}
 
+uses Dm.Global, UnitLancamentoCad;
+
 procedure TFrmLancamento.AddLancamentoLv(id_lancamento: integer;
-                                        descricao, categoria,
-                                        dt: string;
-                                        valor: double);
+                                         descricao, categoria,
+                                         dt, tipo: string;
+                                         valor: double);
 var
   item: TListViewItem;
 begin
@@ -61,8 +71,12 @@ begin
 
   TListItemText(item.Objects.FindDrawable('txtDescricao')).Text := descricao;
   TListItemText(item.Objects.FindDrawable('txtCategoria')).Text := categoria;
-  TListItemText(item.Objects.FindDrawable('txtData')).Text := dt;
-  TListItemText(item.Objects.FindDrawable('txtValor')).Text := FormatFloat('R$#,##0.00', valor);
+  TListItemText(item.Objects.FindDrawable('txtData')).Text := Copy(dt, 1, 5);
+
+
+  TListItemText(item.Objects.FindDrawable('txtValor')).Text :=
+                    ifthen(tipo = 'D', '-', '') +
+                    FormatFloat('R$#,##0.00', valor);
 end;
 
 procedure TFrmLancamento.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -73,7 +87,17 @@ end;
 
 procedure TFrmLancamento.FormShow(Sender: TObject);
 begin
+  FData := now;
   ListarLancamentos;
+end;
+
+procedure TFrmLancamento.imgAddClick(Sender: TObject);
+begin
+  if NOT Assigned(FrmLancamentoCad) then
+    Application.CreateForm(TFrmLancamentoCad, FrmLancamentoCad);
+
+  FrmLancamentoCad.id_lancamento := 0;
+  FrmLancamentoCad.Show;
 end;
 
 procedure TFrmLancamento.imgFecharClick(Sender: TObject);
@@ -81,7 +105,25 @@ begin
   close;
 end;
 
+procedure TFrmLancamento.NavegacaoMes(param: integer);
+begin
+  FData.AddMonth(param);
+  ListarLancamentos;
+end;
+
+procedure TFrmLancamento.imgNextClick(Sender: TObject);
+begin
+  NavegacaoMes(1);
+end;
+
+procedure TFrmLancamento.imgPriorClick(Sender: TObject);
+begin
+  NavegacaoMes(-1);
+end;
+
 procedure TFrmLancamento.TerminateLancamentos(Sender: TObject);
+var
+  tot_rec, tot_desp: double;
 begin
   TLoading.Hide;
 
@@ -92,22 +134,43 @@ begin
     exit;
   end;
 
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
-  AddLancamentoLv(1, 'Compra de Passagem', 'Transporte', '15/05', 45);
+  tot_rec := 0;
+  tot_desp := 0;
+  while NOT DmGlobal.TabLanc.Eof do
+  begin
+    AddLancamentoLv(DmGlobal.TabLanc.FieldByName('id_lancamento').AsInteger,
+                    DmGlobal.TabLanc.FieldByName('descricao').AsString,
+                    DmGlobal.TabLanc.FieldByName('categoria').AsString,
+                    UTCtoShortDateBR(DmGlobal.TabLanc.FieldByName('dt_lancamento').AsString),
+                    DmGlobal.TabLanc.FieldByName('tipo').AsString,
+                    DmGlobal.TabLanc.FieldByName('valor').AsFloat);
+
+    if DmGlobal.TabLanc.FieldByName('tipo').AsString = 'D' then
+      tot_desp := tot_desp + DmGlobal.TabLanc.FieldByName('valor').AsFloat
+    else
+      tot_rec := tot_rec + DmGlobal.TabLanc.FieldByName('valor').AsFloat;
+
+
+    DmGlobal.TabLanc.Next;
+  end;
+
+  lblTotRec.Text := FormatFloat('R$#,##0.00', tot_rec);
+  lblTotDesp.Text := FormatFloat('R$#,##0.00', tot_desp);
+  lblSaldo.Text := FormatFloat('R$#,##0.00', tot_rec - tot_desp);
+
 end;
 
 procedure TFrmLancamento.ListarLancamentos;
 begin
+  lvLancamentos.Items.Clear;
+  lblData.Text := MonthDescription(FData) + ' / ' + FormatDateTime('yyyy', FData);
   TLoading.Show(FrmLancamento);
 
   TLoading.ExecuteThread(procedure
   begin
-    Sleep(2000); // Simulando acesso ao servidor...
+    DmGlobal.ListarLancamentos(0,
+                               FormatDateTime('yyyy-mm-dd', StartOfTheMonth(FData)),
+                               FormatDateTime('yyyy-mm-dd', EndOfTheMonth(FData)));
   end,
   TerminateLancamentos);
 end;

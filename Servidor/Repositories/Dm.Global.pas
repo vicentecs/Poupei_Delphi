@@ -18,20 +18,33 @@ type
   private
     { Private declarations }
   public
-    function ListarCategorias(id_usuario: integer): TJsonArray;
+    // Usuarios --------
     function Login(email, senha: string): TJsonObject;
     function InserirUsuario(nome, email, senha: string): TJsonObject;
     procedure EditarSenha(id_usuario: integer; senha: string);
     procedure EditarUsuario(id_usuario: integer; nome, email: string);
     function ListarUsuarioId(id_usuario: integer): TJsonObject;
     function ListarUsuarioByEmail(email: string): TJsonObject;
-    function ListarLancamentos(id_usuario, id_categoria: integer): TJsonArray;
+
+    // Categorias --------
+    function ListarCategorias(id_usuario: integer): TJsonArray;
     function ListarCategoriaId(id_usuario, id_categoria: integer): TJsonObject;
     function InserirCategoria(id_usuario: integer;
-      descricao: string): TJsonObject;
+                              descricao: string): TJsonObject;
     procedure EditarCategoria(id_usuario, id_categoria: integer;
-      descricao: string);
+                              descricao: string);
     procedure ExcluirCategoria(id_usuario, id_categoria: integer);
+
+    // Lancamentos --------
+    function ListarLancamentos(id_usuario, id_categoria: integer;
+                               dt_de, dt_ate: string): TJsonArray;
+    procedure EditarLancamento(id_usuario, id_lancamento, id_categoria: integer;
+                               descricao, tipo, dt_lancamento: string; valor: double);
+    procedure ExcluirLancamento(id_usuario, id_lancamento: integer);
+    function InserirLancamento(id_usuario, id_categoria: integer; descricao,
+                               tipo, dt_lancamento: string; valor: double): TJsonObject;
+    function ListarLancamentoId(id_usuario,
+                                id_lancamento: integer): TJsonObject;
   end;
 
 var
@@ -291,7 +304,8 @@ end;
 
 // LANCAMENTOS ------
 
-function TDmGlobal.ListarLancamentos(id_usuario, id_categoria: integer): TJsonArray;
+function TDmGlobal.ListarLancamentos(id_usuario, id_categoria: integer;
+                                     dt_de, dt_ate: string): TJsonArray;
 var
   qry: TFDQuery;
 begin
@@ -299,13 +313,26 @@ begin
     qry := TFDQuery.Create(nil);
     qry.Connection := Conn;
 
-    qry.SQL.Add('select l.* from lancamento l ');
+    qry.SQL.Add('select l.*, coalesce(c.descricao, ''Sem Categoria'') as categoria from lancamento l ');
+    qry.SQL.Add('left join categoria c on (c.id_categoria = l.id_categoria and c.id_usuario = l.id_usuario)');
     qry.SQL.Add('where l.id_usuario = :id_usuario');
 
     if id_categoria > 0 then
     begin
       qry.SQL.Add('and l.id_categoria = :id_categoria');
       qry.ParamByName('id_categoria').Value := id_categoria;
+    end;
+
+    if dt_de <> '' then
+    begin
+      qry.SQL.Add('and l.dt_lancamento >= :dt_de');
+      qry.ParamByName('dt_de').Value := dt_de;
+    end;
+
+    if dt_ate <> '' then
+    begin
+      qry.SQL.Add('and l.dt_lancamento <= :dt_ate');
+      qry.ParamByName('dt_ate').Value := dt_ate;
     end;
 
     qry.ParamByName('id_usuario').Value := id_usuario;
@@ -317,5 +344,106 @@ begin
     FreeAndNil(qry);
   end;
 end;
+
+function TDmGlobal.ListarLancamentoId(id_usuario, id_lancamento: integer): TJsonObject;
+var
+  qry: TFDQuery;
+begin
+  try
+    qry := TFDQuery.Create(nil);
+    qry.Connection := Conn;
+
+    qry.SQL.Add('select l.*, coalesce(c.descricao, ''Sem Categoria'') as categoria from lancamento l ');
+    qry.SQL.Add('left join categoria c on (c.id_categoria = l.id_categoria and c.id_usuario = l.id_usuario)');
+    qry.SQL.Add('where l.id_lancamento = :id_lancamento and l.id_usuario = :id_usuario');
+
+    qry.ParamByName('id_usuario').Value := id_usuario;
+    qry.ParamByName('id_lancamento').Value := id_lancamento;
+
+    qry.Active := true;
+
+    Result := qry.ToJSONObject;
+
+  finally
+    FreeAndNil(qry);
+  end;
+end;
+
+function TDmGlobal.InserirLancamento(id_usuario, id_categoria: integer;
+                                     descricao, tipo, dt_lancamento: string;
+                                     valor: double): TJsonObject;
+var
+  qry: TFDQuery;
+begin
+  try
+    qry := TFDQuery.Create(nil);
+    qry.Connection := Conn;
+
+    qry.SQL.Add('insert into lancamento(descricao, valor, tipo, id_categoria, dt_lancamento, id_usuario)');
+    qry.SQL.Add('values(:descricao, :valor, :tipo, :id_categoria, :dt_lancamento, :id_usuario)');
+    qry.SQL.Add('returning id_lancamento');
+
+    qry.ParamByName('descricao').Value := descricao;
+    qry.ParamByName('valor').Value := valor;
+    qry.ParamByName('tipo').Value := tipo;
+    qry.ParamByName('id_categoria').Value := id_categoria;
+    qry.ParamByName('dt_lancamento').Value := dt_lancamento;
+    qry.ParamByName('id_usuario').Value := id_usuario;
+
+    qry.Active := true;
+
+    Result := qry.ToJSONObject;
+
+  finally
+    FreeAndNil(qry);
+  end;
+end;
+
+procedure TDmGlobal.EditarLancamento(id_usuario, id_lancamento, id_categoria: integer;
+                                     descricao, tipo, dt_lancamento: string;
+                                     valor: double);
+var
+  qry: TFDQuery;
+begin
+  try
+    qry := TFDQuery.Create(nil);
+    qry.Connection := Conn;
+
+    qry.SQL.Add('update lancamento set descricao = :descricao, valor = :valor, tipo = :tipo,');
+    qry.SQL.Add('id_categoria = :id_categoria, dt_lancamento = :dt_lancamento');
+    qry.SQL.Add('where id_lancamento = :id_lancamento and id_usuario = :id_usuario');
+    qry.ParamByName('descricao').Value := descricao;
+    qry.ParamByName('valor').Value := valor;
+    qry.ParamByName('tipo').Value := tipo;
+    qry.ParamByName('id_categoria').Value := id_categoria;
+    qry.ParamByName('dt_lancamento').Value := dt_lancamento;
+    qry.ParamByName('id_lancamento').Value := id_lancamento;
+    qry.ParamByName('id_usuario').Value := id_usuario;
+    qry.ExecSQL;
+
+  finally
+    FreeAndNil(qry);
+  end;
+end;
+
+procedure TDmGlobal.ExcluirLancamento(id_usuario, id_lancamento: integer);
+var
+  qry: TFDQuery;
+begin
+  try
+    qry := TFDQuery.Create(nil);
+    qry.Connection := Conn;
+
+    qry.SQL.Add('delete from lancamento ');
+    qry.SQL.Add('where id_lancamento = :id_lancamento and id_usuario = :id_usuario');
+    qry.ParamByName('id_usuario').Value := id_usuario;
+    qry.ParamByName('id_lancamento').Value := id_lancamento;
+    qry.ExecSQL;
+
+  finally
+    FreeAndNil(qry);
+  end;
+end;
+
 
 end.

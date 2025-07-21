@@ -12,7 +12,10 @@ uses
   UnitCategoriaCad in 'UnitCategoriaCad.pas' {FrmCategoriaCad},
   UnitPerfil in 'UnitPerfil.pas' {FrmPerfil},
   UnitSenha in 'UnitSenha.pas' {FrmSenha},
-  uLoading in 'Utils\uLoading.pas';
+  uLoading in 'Utils\uLoading.pas',
+  uSession in 'Utils\uSession.pas',
+  Dm.Global in 'DataModules\Dm.Global.pas' {DmGlobal: TDataModule},
+  uFunctions in 'Utils\uFunctions.pas';
 
 {$R *.res}
 
@@ -27,5 +30,6 @@ begin
   Application.CreateForm(TFrmCategoriaCad, FrmCategoriaCad);
   Application.CreateForm(TFrmPerfil, FrmPerfil);
   Application.CreateForm(TFrmSenha, FrmSenha);
+  Application.CreateForm(TDmGlobal, DmGlobal);
   Application.Run;
 end.

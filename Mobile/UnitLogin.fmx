@@ -16,6 +16,7 @@ object FrmLogin: TFrmLogin
     Size.Width = 400.000000000000000000
     Size.Height = 650.000000000000000000
     Size.PlatformDefault = False
+    TabHeight = 49.000000000000000000
     TabIndex = 1
     TabOrder = 0
     TabPosition = None
@@ -1131,10 +1132,11 @@ object FrmLogin: TFrmLogin
             OnClick = btnLoginClick
           end
         end
-        object Edit1: TEdit
+        object edtEmail: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Bottom
           TabOrder = 3
+          Text = 'heber@teste.com.br'
           TextSettings.Font.Size = 14.000000000000000000
           Position.Y = 250.000000000000000000
           Margins.Bottom = 30.000000000000000000
@@ -1144,11 +1146,12 @@ object FrmLogin: TFrmLogin
           TextPrompt = 'E-mail'
           StyledSettings = [Family, Style, FontColor]
         end
-        object Edit2: TEdit
+        object edtSenha: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Bottom
           TabOrder = 2
           Password = True
+          Text = '12345'
           TextSettings.Font.Size = 14.000000000000000000
           Position.Y = 312.000000000000000000
           Margins.Bottom = 30.000000000000000000
@@ -1702,20 +1705,21 @@ object FrmLogin: TFrmLogin
           Stroke.Kind = None
           XRadius = 6.000000000000000000
           YRadius = 6.000000000000000000
-          object SpeedButton3: TSpeedButton
+          object btnCriarConta: TSpeedButton
             Align = Client
             StyledSettings = [Family]
             Size.Width = 286.000000000000000000
             Size.Height = 48.000000000000000000
             Size.PlatformDefault = False
-            Text = 'Acessar'
+            Text = 'Criar Conta'
             TextSettings.Font.Size = 16.000000000000000000
             TextSettings.Font.StyleExt = {00060000000000000004000000}
             TextSettings.FontColor = claWhite
             TextSettings.Trimming = None
+            OnClick = btnCriarContaClick
           end
         end
-        object Edit3: TEdit
+        object edtContaNome: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Bottom
           TabOrder = 5
@@ -1728,7 +1732,7 @@ object FrmLogin: TFrmLogin
           TextPrompt = 'Nome completo'
           StyledSettings = [Family, Style, FontColor]
         end
-        object Edit4: TEdit
+        object EdtContaSenha: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Bottom
           TabOrder = 3
@@ -1742,7 +1746,7 @@ object FrmLogin: TFrmLogin
           TextPrompt = 'Informe uma senha'
           StyledSettings = [Family, Style, FontColor]
         end
-        object Edit5: TEdit
+        object EdtContaEmail: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Bottom
           TabOrder = 4
@@ -1755,7 +1759,7 @@ object FrmLogin: TFrmLogin
           TextPrompt = 'E-mail'
           StyledSettings = [Family, Style, FontColor]
         end
-        object Edit6: TEdit
+        object EdtContaSenha2: TEdit
           Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Bottom
           TabOrder = 2
