@@ -184,8 +184,8 @@ begin
     json.AddPair('descricao', descricao);
     json.AddPair('tipo', tipo);
     json.AddPair('dt_lancamento', dt);
-    json.AddPair('valor', valor);
-    json.AddPair('id_categoria', id_categoria);
+    json.AddPair('valor', valor.ToString);
+    json.AddPair('id_categoria', id_categoria.ToString);
 
     resp := TRequest.New.BaseURL(BASE_URL)
                         .Resource('/lancamentos')
@@ -215,8 +215,8 @@ begin
     json.AddPair('descricao', descricao);
     json.AddPair('tipo', tipo);
     json.AddPair('dt_lancamento', dt);
-    json.AddPair('valor', valor);
-    json.AddPair('id_categoria', id_categoria);
+    json.AddPair('valor', valor.ToString);
+    json.AddPair('id_categoria', id_categoria.ToString);
 
     resp := TRequest.New.BaseURL(BASE_URL)
                         .Resource('/lancamentos')

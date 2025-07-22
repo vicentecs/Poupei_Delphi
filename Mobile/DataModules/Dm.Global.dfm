@@ -1,4 +1,5 @@
 object DmGlobal: TDmGlobal
+  OldCreateOrder = True
   OnCreate = DataModuleCreate
   Height = 408
   Width = 467
