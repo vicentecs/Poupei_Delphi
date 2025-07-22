@@ -738,7 +738,7 @@ object FrmPrincipal: TFrmPrincipal
       Text = #218'ltimos Lan'#231'amentos'
       TabOrder = 2
     end
-    object Label8: TLabel
+    object lblTodos: TLabel
       Align = Right
       StyledSettings = [Family]
       HitTest = True
@@ -753,7 +753,7 @@ object FrmPrincipal: TFrmPrincipal
       TextSettings.HorzAlign = Trailing
       Text = 'Ver todos'
       TabOrder = 1
-      OnClick = Label8Click
+      OnClick = lblTodosClick
     end
   end
   object lvLancamentos: TListView
@@ -822,6 +822,7 @@ object FrmPrincipal: TFrmPrincipal
         AppearanceClassName = 'TTextObjectAppearance'
       end>
     CanSwipeDelete = False
+    OnItemClick = lvLancamentosItemClick
     ShowSelection = False
   end
   object rectBottomAbas: TRectangle
@@ -953,11 +954,12 @@ object FrmPrincipal: TFrmPrincipal
                 2A784BFB35D1E61F97E8CA5DBACC683B0000000049454E44AE426082}
               FileName = 'D:\Poupei\Mobile\Images\aba-lancamentos.png'
             end>
-          Position.X = 92.000000000000000000
+          Position.X = 90.000000000000000000
           Position.Y = 11.000000000000000000
           Size.Width = 32.000000000000000000
           Size.Height = 32.000000000000000000
           Size.PlatformDefault = False
+          OnClick = lblTodosClick
         end
         object imgAbaConfig: TImage
           MultiResBitmap.Height = 64

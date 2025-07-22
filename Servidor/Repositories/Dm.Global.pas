@@ -58,7 +58,11 @@ implementation
 
 procedure TDmGlobal.DataModuleCreate(Sender: TObject);
 begin
-  Conn.Params.Add('Database=D:\Poupei\Database\BANCO.FDB');
+  if FileExists('E:\Poupei\BANCO.FDB') then
+    Conn.Params.Add('Database=E:\Poupei\BANCO.FDB')
+  else
+    Conn.Params.Add('Database=D:\Poupei\Database\BANCO.FDB');
+
   FDPhysFBDriverLink.VendorLib := 'C:\Program Files (x86)\Firebird\Firebird_3_0\fbclient.dll';
 end;
 

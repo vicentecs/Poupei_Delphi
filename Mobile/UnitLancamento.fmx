@@ -603,6 +603,7 @@ object FrmLancamento: TFrmLancamento
         AppearanceClassName = 'TTextObjectAppearance'
       end>
     CanSwipeDelete = False
+    OnItemClick = lvLancamentosItemClick
     ShowSelection = False
   end
 end

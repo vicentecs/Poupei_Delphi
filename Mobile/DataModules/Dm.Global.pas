@@ -26,6 +26,17 @@ type
     procedure ListarCategorias;
     procedure InserirLancamamento(descricao, tipo, dt: string; valor: double;
                                   id_categoria: integer);
+    procedure ListarLancamentoId(id_lancamento: integer);
+    procedure EditarLancamamento(id_lancamento: integer; descricao, tipo,
+                                 dt: string; valor: double; id_categoria: integer);
+    procedure ExcluirLancamento(id_lancamento: integer);
+    procedure DadosUsuario;
+    procedure EditarUsuario(nome, email: string);
+    procedure EditarSenha(senha: string);
+    procedure EditarCategoria(id_categoria: integer; descricao: string);
+    procedure InserirCategoria(descricao: string);
+    procedure ListarCategoriaId(id_categoria: integer);
+    procedure ExcluirCategoria(id_categoria: integer);
   end;
 
 var
@@ -33,6 +44,13 @@ var
 
 Const
   BASE_URL = 'http://localhost:3001';
+  //BASE_URL = 'http://23.22.2.201:3001';
+
+
+{
+Configurar o AndroidManifestTemplate com:
+android:usesCleartextTraffic="true"
+}
 
 implementation
 
@@ -132,20 +150,21 @@ begin
 
 end;
 
-procedure TDmGlobal.ListarCategorias;
+procedure TDmGlobal.ListarLancamentoId(id_lancamento: integer);
 var
   resp: IResponse;
 begin
-  if TabCategoria.Active then
-    TabCategoria.EmptyDataSet;
+  if TabLanc.Active then
+    TabLanc.EmptyDataSet;
 
-  TabCategoria.FieldDefs.Clear;
+  TabLanc.FieldDefs.Clear;
 
   resp := TRequest.New.BaseURL(BASE_URL)
-                      .Resource('/categorias')
+                      .Resource('/lancamentos')
+                      .ResourceSuffix(id_lancamento.ToString)
                       .Accept('application/json')
                       .TokenBearer(TSession.token)
-                      .Adapters(TDataSetSerializeAdapter.New(TabCategoria))
+                      .Adapters(TDataSetSerializeAdapter.New(TabLanc))
                       .Get;
 
   if resp.StatusCode <> 200 then
@@ -181,6 +200,230 @@ begin
   finally
     FreeAndNil(json);
   end;
+end;
+
+procedure TDmGlobal.EditarLancamamento(id_lancamento: integer;
+                                       descricao, tipo, dt: string;
+                                       valor: double;
+                                       id_categoria: integer);
+var
+  resp: IResponse;
+  json: TJsonObject;
+begin
+  json := TJsonObject.Create;
+  try
+    json.AddPair('descricao', descricao);
+    json.AddPair('tipo', tipo);
+    json.AddPair('dt_lancamento', dt);
+    json.AddPair('valor', valor);
+    json.AddPair('id_categoria', id_categoria);
+
+    resp := TRequest.New.BaseURL(BASE_URL)
+                        .Resource('/lancamentos')
+                        .ResourceSuffix(id_lancamento.ToString)
+                        .AddBody(json.ToJSON)
+                        .Accept('application/json')
+                        .TokenBearer(TSession.token)
+                        .Put;
+
+    if resp.StatusCode <> 200 then
+      raise Exception.Create(resp.Content);
+
+  finally
+    FreeAndNil(json);
+  end;
+end;
+
+procedure TDmGlobal.ExcluirLancamento(id_lancamento: integer);
+var
+  resp: IResponse;
+begin
+  resp := TRequest.New.BaseURL(BASE_URL)
+                      .Resource('/lancamentos')
+                      .ResourceSuffix(id_lancamento.ToString)
+                      .Accept('application/json')
+                      .TokenBearer(TSession.token)
+                      .Delete;
+
+  if resp.StatusCode <> 200 then
+    raise Exception.Create(resp.Content);
+end;
+
+procedure TDmGlobal.DadosUsuario;
+var
+  resp: IResponse;
+begin
+  if TabUsuario.Active then
+    TabUsuario.EmptyDataSet;
+
+  TabUsuario.FieldDefs.Clear;
+
+  resp := TRequest.New.BaseURL(BASE_URL)
+                      .Resource('/usuarios')
+                      .Accept('application/json')
+                      .TokenBearer(TSession.token)
+                      .Adapters(TDataSetSerializeAdapter.New(TabUsuario))
+                      .Get;
+
+  if resp.StatusCode <> 200 then
+    raise Exception.Create(resp.Content);
+end;
+
+procedure TDmGlobal.EditarUsuario(nome, email: string);
+var
+  resp: IResponse;
+  json: TJsonObject;
+begin
+  json := TJsonObject.Create;
+  try
+    json.AddPair('nome', nome);
+    json.AddPair('email', email);
+
+    resp := TRequest.New.BaseURL(BASE_URL)
+                        .Resource('/usuarios')
+                        .AddBody(json.ToJSON)
+                        .Accept('application/json')
+                        .TokenBearer(TSession.token)
+                        .Put;
+
+    if resp.StatusCode <> 200 then
+      raise Exception.Create(resp.Content);
+
+  finally
+    FreeAndNil(json);
+  end;
+end;
+
+procedure TDmGlobal.EditarSenha(senha: string);
+var
+  resp: IResponse;
+  json: TJsonObject;
+begin
+  json := TJsonObject.Create;
+  try
+    json.AddPair('senha', senha);
+
+    resp := TRequest.New.BaseURL(BASE_URL)
+                        .Resource('/usuarios/password')
+                        .AddBody(json.ToJSON)
+                        .Accept('application/json')
+                        .TokenBearer(TSession.token)
+                        .post;
+
+    if resp.StatusCode <> 200 then
+      raise Exception.Create(resp.Content);
+
+  finally
+    FreeAndNil(json);
+  end;
+end;
+
+procedure TDmGlobal.ListarCategorias;
+var
+  resp: IResponse;
+begin
+  if TabCategoria.Active then
+    TabCategoria.EmptyDataSet;
+
+  TabCategoria.FieldDefs.Clear;
+
+  resp := TRequest.New.BaseURL(BASE_URL)
+                      .Resource('/categorias')
+                      .Accept('application/json')
+                      .TokenBearer(TSession.token)
+                      .Adapters(TDataSetSerializeAdapter.New(TabCategoria))
+                      .Get;
+
+  if resp.StatusCode <> 200 then
+    raise Exception.Create(resp.Content);
+
+end;
+
+procedure TDmGlobal.ListarCategoriaId(id_categoria: integer);
+var
+  resp: IResponse;
+begin
+  if TabCategoria.Active then
+    TabCategoria.EmptyDataSet;
+
+  TabCategoria.FieldDefs.Clear;
+
+  resp := TRequest.New.BaseURL(BASE_URL)
+                      .Resource('/categorias')
+                      .ResourceSuffix(id_categoria.toString)
+                      .Accept('application/json')
+                      .TokenBearer(TSession.token)
+                      .Adapters(TDataSetSerializeAdapter.New(TabCategoria))
+                      .Get;
+
+  if resp.StatusCode <> 200 then
+    raise Exception.Create(resp.Content);
+
+end;
+
+procedure TDmGlobal.InserirCategoria(descricao: string);
+var
+  resp: IResponse;
+  json: TJsonObject;
+begin
+  json := TJsonObject.Create;
+  try
+    json.AddPair('descricao', descricao);
+
+    resp := TRequest.New.BaseURL(BASE_URL)
+                        .Resource('/categorias')
+                        .AddBody(json.ToJSON)
+                        .Accept('application/json')
+                        .TokenBearer(TSession.token)
+                        .post;
+
+    if resp.StatusCode <> 201 then
+      raise Exception.Create(resp.Content);
+
+  finally
+    FreeAndNil(json);
+  end;
+end;
+
+procedure TDmGlobal.EditarCategoria(id_categoria: integer; descricao: string);
+var
+  resp: IResponse;
+  json: TJsonObject;
+begin
+  json := TJsonObject.Create;
+  try
+    json.AddPair('descricao', descricao);
+
+    resp := TRequest.New.BaseURL(BASE_URL)
+                        .Resource('/categorias')
+                        .ResourceSuffix(id_categoria.tostring)
+                        .AddBody(json.ToJSON)
+                        .Accept('application/json')
+                        .TokenBearer(TSession.token)
+                        .put;
+
+    if resp.StatusCode <> 200 then
+      raise Exception.Create(resp.Content);
+
+  finally
+    FreeAndNil(json);
+  end;
+end;
+
+procedure TDmGlobal.ExcluirCategoria(id_categoria: integer);
+var
+  resp: IResponse;
+begin
+  resp := TRequest.New.BaseURL(BASE_URL)
+                      .Resource('/categorias')
+                      .ResourceSuffix(id_categoria.tostring)
+                      .Accept('application/json')
+                      .TokenBearer(TSession.token)
+                      .delete;
+
+  if resp.StatusCode <> 200 then
+    raise Exception.Create(resp.Content);
+
 end;
 
 end.

@@ -35,6 +35,8 @@ type
     procedure imgPriorClick(Sender: TObject);
     procedure imgNextClick(Sender: TObject);
     procedure imgAddClick(Sender: TObject);
+    procedure lvLancamentosItemClick(const Sender: TObject;
+      const AItem: TListViewItem);
   private
     FData: TDateTime;
     procedure AddLancamentoLv(id_lancamento: integer;
@@ -96,6 +98,7 @@ begin
   if NOT Assigned(FrmLancamentoCad) then
     Application.CreateForm(TFrmLancamentoCad, FrmLancamentoCad);
 
+  FrmLancamentoCad.ExecuteOnClose := ListarLancamentos;
   FrmLancamentoCad.id_lancamento := 0;
   FrmLancamentoCad.Show;
 end;
@@ -175,5 +178,16 @@ begin
   TerminateLancamentos);
 end;
 
+
+procedure TFrmLancamento.lvLancamentosItemClick(const Sender: TObject;
+  const AItem: TListViewItem);
+begin
+  if NOT Assigned(FrmLancamentoCad) then
+    Application.CreateForm(TFrmLancamentoCad, FrmLancamentoCad);
+
+  FrmLancamentoCad.ExecuteOnClose := ListarLancamentos;
+  FrmLancamentoCad.id_lancamento := AItem.Tag;
+  FrmLancamentoCad.Show;
+end;
 
 end.

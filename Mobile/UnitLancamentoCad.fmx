@@ -195,8 +195,9 @@ object FrmLancamentoCad: TFrmLancamentoCad
       Align = Top
       Items.Strings = (
         'Farm'#225'cia'
-        'Mercado')
-      ItemIndex = 0
+        'Mercado'
+        'Padaria'
+        'Posto')
       Margins.Top = 20.000000000000000000
       Position.Y = 112.000000000000000000
       Size.Width = 360.000000000000000000
@@ -223,7 +224,7 @@ object FrmLancamentoCad: TFrmLancamentoCad
       Size.Height = 85.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 4
-      object Image1: TImage
+      object imgDelete: TImage
         MultiResBitmap.Height = 64
         MultiResBitmap.Width = 64
         MultiResBitmap = <
@@ -268,6 +269,8 @@ object FrmLancamentoCad: TFrmLancamentoCad
         Size.Width = 40.000000000000000000
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
+        Visible = False
+        OnClick = imgDeleteClick
       end
     end
   end

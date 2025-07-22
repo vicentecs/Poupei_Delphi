@@ -107,6 +107,7 @@ object FrmSenha: TFrmSenha
       Size.Width = 32.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
+      OnClick = imgSalvarClick
     end
   end
   object Layout2: TLayout
@@ -118,7 +119,7 @@ object FrmSenha: TFrmSenha
     Size.Height = 585.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
-    object Edit1: TEdit
+    object edtSenha1: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       Align = Top
       TabOrder = 1
@@ -130,7 +131,7 @@ object FrmSenha: TFrmSenha
       TextPrompt = 'Nova senha'
       StyledSettings = [Family, Style, FontColor]
     end
-    object Edit2: TEdit
+    object edtSenha2: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       Align = Top
       TabOrder = 0

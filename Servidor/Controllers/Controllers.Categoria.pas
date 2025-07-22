@@ -83,7 +83,7 @@ var
 begin
   try
     body := Req.Body<TJSONObject>;
-    descricao := body.GetValue<string>('senha', '');
+    descricao := body.GetValue<string>('descricao', '');
     id_categoria := Req.Params['id_categoria'].ToInteger;
     id_usuario := Get_Usuario_Request(Req);
 

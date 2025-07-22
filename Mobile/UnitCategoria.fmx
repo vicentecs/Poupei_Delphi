@@ -129,6 +129,7 @@ object FrmCategoria: TFrmCategoria
     ItemAppearanceObjects.ItemObjects.Text.Font.Size = 13.000000000000000000
     ItemAppearanceObjects.ItemObjects.Text.TextColor = xFF6B6B6B
     CanSwipeDelete = False
+    OnItemClick = lvCategoriaItemClick
     ShowSelection = False
   end
 end

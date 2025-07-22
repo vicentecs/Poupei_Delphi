@@ -29,7 +29,7 @@ type
     Rectangle1: TRectangle;
     Rectangle2: TRectangle;
     Label7: TLabel;
-    Label8: TLabel;
+    lblTodos: TLabel;
     lvLancamentos: TListView;
     rectBottomAbas: TRectangle;
     rectAbas: TRectangle;
@@ -40,10 +40,12 @@ type
     imgAbaConfig: TImage;
     Layout4: TLayout;
     procedure FormShow(Sender: TObject);
-    procedure Label8Click(Sender: TObject);
+    procedure lblTodosClick(Sender: TObject);
     procedure imgAbaConfigClick(Sender: TObject);
     procedure imgAddClick(Sender: TObject);
     procedure imgAbaHomeClick(Sender: TObject);
+    procedure lvLancamentosItemClick(const Sender: TObject;
+      const AItem: TListViewItem);
   private
     procedure AddLancamentoLv(id_lancamento: integer; descricao,
                             categoria, dt, tipo: string; valor: double);
@@ -84,7 +86,7 @@ begin
                     FormatFloat('R$#,##0.00', valor);
 end;
 
-procedure TFrmPrincipal.Label8Click(Sender: TObject);
+procedure TFrmPrincipal.lblTodosClick(Sender: TObject);
 begin
   if NOT Assigned(FrmLancamento) then
     Application.CreateForm(TFrmLancamento, FrmLancamento);
@@ -148,6 +150,17 @@ begin
   TerminateLancamentos);
 end;
 
+procedure TFrmPrincipal.lvLancamentosItemClick(const Sender: TObject;
+  const AItem: TListViewItem);
+begin
+  if NOT Assigned(FrmLancamentoCad) then
+    Application.CreateForm(TFrmLancamentoCad, FrmLancamentoCad);
+
+  FrmLancamentoCad.ExecuteOnClose := ListarUltLancamentos;
+  FrmLancamentoCad.id_lancamento := AItem.Tag;
+  FrmLancamentoCad.Show;
+end;
+
 procedure TFrmPrincipal.FormShow(Sender: TObject);
 begin
   ListarUltLancamentos;
@@ -171,6 +184,7 @@ begin
   if NOT Assigned(FrmLancamentoCad) then
     Application.CreateForm(TFrmLancamentoCad, FrmLancamentoCad);
 
+  FrmLancamentoCad.ExecuteOnClose := ListarUltLancamentos;
   FrmLancamentoCad.id_lancamento := 0;
   FrmLancamentoCad.Show;
 end;

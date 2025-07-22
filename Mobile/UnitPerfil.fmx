@@ -108,6 +108,7 @@ object FrmPerfil: TFrmPerfil
       Size.Width = 32.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
+      OnClick = imgSalvarClick
     end
   end
   object Layout2: TLayout

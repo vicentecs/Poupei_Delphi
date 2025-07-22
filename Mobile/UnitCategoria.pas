@@ -20,6 +20,8 @@ type
     procedure imgFecharClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure imgAddClick(Sender: TObject);
+    procedure lvCategoriaItemClick(const Sender: TObject;
+      const AItem: TListViewItem);
   private
     procedure AddCategoriaLv(id_categoria: integer; descricao: string);
     procedure ListarCategorias;
@@ -36,7 +38,7 @@ implementation
 
 {$R *.fmx}
 
-uses UnitCategoriaCad;
+uses UnitCategoriaCad, Dm.Global;
 
 procedure TFrmCategoria.AddCategoriaLv(id_categoria: integer;
                                        descricao: string);
@@ -60,22 +62,37 @@ begin
     exit;
   end;
 
-  AddCategoriaLv(1, 'Transporte');
-  AddCategoriaLv(2, 'Lazer');
-  AddCategoriaLv(3, 'Viagem');
-  AddCategoriaLv(4, 'Mercado');
-  AddCategoriaLv(5, 'Casa');
+  while NOT DmGlobal.TabCategoria.Eof do
+  begin
+    AddCategoriaLv(DmGlobal.TabCategoria.FieldByName('id_categoria').AsInteger,
+                   DmGlobal.TabCategoria.FieldByName('descricao').AsString);
+
+    DmGlobal.TabCategoria.Next;
+  end;
+
 end;
 
 procedure TFrmCategoria.ListarCategorias;
 begin
+  lvCategoria.Items.Clear;
   TLoading.Show(FrmCategoria);
 
   TLoading.ExecuteThread(procedure
   begin
-    Sleep(2000); // Simulando acesso ao servidor...
+    DmGlobal.ListarCategorias;
   end,
   TerminateCategorias);
+end;
+
+procedure TFrmCategoria.lvCategoriaItemClick(const Sender: TObject;
+  const AItem: TListViewItem);
+begin
+  if NOT Assigned(FrmCategoriaCad) then
+    Application.CreateForm(TFrmCategoriaCad, FrmCategoriaCad);
+
+  FrmCategoriaCad.ExecuteOnClose := ListarCategorias;
+  FrmCategoriaCad.id_categoria := Aitem.Tag;
+  FrmCategoriaCad.Show;
 end;
 
 procedure TFrmCategoria.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -95,6 +112,8 @@ begin
   if NOT Assigned(FrmCategoriaCad) then
     Application.CreateForm(TFrmCategoriaCad, FrmCategoriaCad);
 
+  FrmCategoriaCad.ExecuteOnClose := ListarCategorias;
+  FrmCategoriaCad.id_categoria := 0;
   FrmCategoriaCad.Show;
 end;
 

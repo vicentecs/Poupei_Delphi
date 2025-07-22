@@ -20,9 +20,11 @@ type
     procedure imgFecharClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
+    procedure imgSalvarClick(Sender: TObject);
   private
     procedure CarregarDadosPerfil;
     procedure TerminateDadosPerfil(Sender: TObject);
+    procedure TerminateEditarUsuario(Sender: TObject);
     { Private declarations }
   public
     { Public declarations }
@@ -34,6 +36,8 @@ var
 implementation
 
 {$R *.fmx}
+
+uses Dm.Global;
 
 procedure TFrmPerfil.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
@@ -51,6 +55,32 @@ begin
   close;
 end;
 
+procedure TFrmPerfil.TerminateEditarUsuario(Sender: TObject);
+begin
+  TLoading.Hide;
+
+  // Se deu erro na thread
+  if Assigned(TThread(Sender).FatalException) then
+  begin
+    showmessage(Exception(TThread(sender).FatalException).Message);
+    exit;
+  end;
+
+  close;
+end;
+
+
+procedure TFrmPerfil.imgSalvarClick(Sender: TObject);
+begin
+  TLoading.Show(FrmPerfil);
+
+  TLoading.ExecuteThread(procedure
+  begin
+    DmGlobal.EditarUsuario(edtNome.Text, edtEmail.Text);
+  end,
+  TerminateEditarUsuario);
+end;
+
 procedure TFrmPerfil.TerminateDadosPerfil(Sender: TObject);
 begin
   TLoading.Hide;
@@ -62,8 +92,8 @@ begin
     exit;
   end;
 
-  edtNome.Text := 'Heber Stein Mazutti';
-  edtEmail.Text := 'heber@teste.com.br';
+  edtNome.Text := DmGlobal.TabUsuario.FieldByName('nome').AsString;
+  edtEmail.Text := DmGlobal.TabUsuario.FieldByName('email').AsString;
 end;
 
 procedure TFrmPerfil.CarregarDadosPerfil;
@@ -72,7 +102,7 @@ begin
 
   TLoading.ExecuteThread(procedure
   begin
-    Sleep(2000); // Simulando acesso ao servidor...
+    DmGlobal.DadosUsuario;
   end,
   TerminateDadosPerfil);
 end;

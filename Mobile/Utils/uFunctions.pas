@@ -3,7 +3,7 @@ unit uFunctions;
 interface
 
 uses System.DateUtils, FMX.ListBox, FireDAC.Comp.Client,
-     FireDAC.DApt;
+     FireDAC.DApt, System.SysUtils;
 
 function UTCtoDateBR(dt: string): string;
 function UTCtoShortDateBR(dt: string): string;
@@ -13,6 +13,7 @@ procedure MontaCombo(cmb: TCombobox; Tab: TFDMemTable;
                      ind_todos: boolean);
 procedure ComboSelecionarById(cmb: TComboBox; id: integer);
 function ComboGetId(cmb: TComboBox): integer;
+function ShortStringUTCToDate(str: string): TDate;
 
 implementation
 
@@ -82,6 +83,21 @@ begin
 
 end;
 
+// Formato: 2021-10-09  -->  Date
+function ShortStringUTCToDate(str: string): TDate;
+var
+    ano, mes, dia: integer;
+begin
+    try
+        ano := StrToint(Copy(str, 1, 4));
+        mes := StrToint(Copy(str, 6, 2));
+        dia := StrToint(Copy(str, 9, 2));
+
+        Result := EncodeDateTime(ano, mes, dia, 0, 0, 0, 0);
+    except
+        Result := 0;
+    end;
+end;
 
 
 end.

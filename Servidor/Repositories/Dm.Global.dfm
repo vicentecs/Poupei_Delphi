@@ -4,7 +4,6 @@ object DmGlobal: TDmGlobal
   Width = 546
   object Conn: TFDConnection
     Params.Strings = (
-      'Database=D:\Poupei\Database\BANCO.FDB'
       'User_Name=SYSDBA'
       'Password=masterkey'
       'Protocol=TCPIP'

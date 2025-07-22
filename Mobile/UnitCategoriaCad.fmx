@@ -10,6 +10,7 @@ object FrmCategoriaCad: TFrmCategoriaCad
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnClose = FormClose
+  OnShow = FormShow
   DesignerMasterStyle = 3
   object Layout1: TLayout
     Align = Top
@@ -107,6 +108,7 @@ object FrmCategoriaCad: TFrmCategoriaCad
       Size.Width = 32.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
+      OnClick = imgSalvarClick
     end
   end
   object Layout2: TLayout
@@ -118,7 +120,7 @@ object FrmCategoriaCad: TFrmCategoriaCad
     Size.Height = 585.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
-    object Edit1: TEdit
+    object edtDescricao: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       Align = Top
       TabOrder = 0
@@ -136,7 +138,7 @@ object FrmCategoriaCad: TFrmCategoriaCad
       Size.Height = 85.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
-      object Image1: TImage
+      object imgDelete: TImage
         MultiResBitmap.Height = 64
         MultiResBitmap.Width = 64
         MultiResBitmap = <
@@ -181,6 +183,8 @@ object FrmCategoriaCad: TFrmCategoriaCad
         Size.Width = 40.000000000000000000
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
+        Visible = False
+        OnClick = imgDeleteClick
       end
     end
   end

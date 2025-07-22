@@ -65,6 +65,10 @@ procedure EditarSenha(id_usuario: integer; senha: string);
 var
   dm: TDmGlobal;
 begin
+  // Validar tamanho da senha...
+  if (Length(senha) < 5) then
+    raise Exception.Create('A senha deve ter pelo menos 5 caracteres');
+
   try
     dm := TDmGlobal.Create(nil);
 
