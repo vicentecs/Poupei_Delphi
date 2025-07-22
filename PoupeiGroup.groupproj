@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{674DFBF5-AD84-4F71-94DE-9B5CF9C4A9FC}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Mobile\Poupei.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Servidor\ServidorPoupei.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Poupei">
+        <MSBuild Projects="Mobile\Poupei.dproj"/>
+    </Target>
+    <Target Name="Poupei:Clean">
+        <MSBuild Projects="Mobile\Poupei.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Poupei:Make">
+        <MSBuild Projects="Mobile\Poupei.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ServidorPoupei">
+        <MSBuild Projects="Servidor\ServidorPoupei.dproj"/>
+    </Target>
+    <Target Name="ServidorPoupei:Clean">
+        <MSBuild Projects="Servidor\ServidorPoupei.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ServidorPoupei:Make">
+        <MSBuild Projects="Servidor\ServidorPoupei.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Poupei;ServidorPoupei"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Poupei:Clean;ServidorPoupei:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Poupei:Make;ServidorPoupei:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
