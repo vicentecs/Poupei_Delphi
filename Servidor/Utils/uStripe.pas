@@ -10,7 +10,8 @@ type
   TStripe = class
   public
     class function CreateCheckoutSession(ASecretKey, APriceID,
-                                         ASuccessURL, ACancelURL, Customer: string): string;
+                                         ASuccessURL, ACancelURL, Customer: string;
+                                         Id_usuario: integer): string;
     class procedure CancelarAssinaturaFinalPeriodo(ASecretKey, SubscriptionID: string);
   end;
 
@@ -18,7 +19,8 @@ implementation
 
 
 class function TStripe.CreateCheckoutSession(ASecretKey, APriceID, ASuccessURL,
-                                             ACancelURL, Customer: string): string;
+                                             ACancelURL, Customer: string;
+                                             Id_usuario: integer): string;
 var
   Client: THttpClient;
   Params: TStringList;
@@ -37,6 +39,7 @@ begin
     Params.Add('line_items[0][quantity]=1');
     Params.Add('success_url=' + ASuccessURL);
     Params.Add('cancel_url=' + ACancelURL);
+    Params.Add('subscription_data[metadata][id_usuario]=' + Id_usuario.ToString);
 
     // Se passou um customer id, deve criar a fatura para ele...
     if Customer <> '' then

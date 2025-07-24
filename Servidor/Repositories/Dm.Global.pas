@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.FB,
   FireDAC.Phys.FBDef, FireDAC.FMXUI.Wait, FireDAC.Phys.IBBase, Data.DB,
   FireDAC.Comp.Client, System.JSON, DataSet.Serialize,
-  FireDAC.DApt;
+  FireDAC.DApt, System.DateUtils;
 
 type
   TDmGlobal = class(TDataModule)
@@ -45,6 +45,12 @@ type
                                tipo, dt_lancamento: string; valor: double): TJsonObject;
     function ListarLancamentoId(id_usuario,
                                 id_lancamento: integer): TJsonObject;
+
+    // Webhooks ---------
+    procedure WebhookAssinaturaCriada(id_usuario: integer; StripeCustomerID,
+                                      StripeAssinaturaID: string; VlAssinatura: double);
+    procedure WebhookNovoPagamento(StripeCustomerID: string);
+    procedure CancelarAssinatura(id_usuario: integer);
   end;
 
 var
@@ -462,6 +468,76 @@ begin
     FreeAndNil(qry);
   end;
 end;
+
+
+// WEBHOOK ------
+
+procedure TDmGlobal.WebhookAssinaturaCriada(id_usuario: integer;
+                                            StripeCustomerID, StripeAssinaturaID: string;
+                                            VlAssinatura: double);
+var
+  qry: TFDQuery;
+begin
+  try
+    qry := TFDQuery.Create(nil);
+    qry.Connection := Conn;
+
+    qry.SQL.Add('update usuario set stripe_cliente_id = :stripe_cliente_id, ');
+    qry.SQL.Add('stripe_assinatura_id = :stripe_assinatura_id, vl_assinatura = :vl_assinatura');
+    qry.SQL.Add('where id_usuario = :id_usuario');
+    qry.ParamByName('id_usuario').Value := id_usuario;
+    qry.ParamByName('stripe_cliente_id').Value := StripeCustomerID;
+    qry.ParamByName('stripe_assinatura_id').Value := StripeAssinaturaID;
+    qry.ParamByName('vl_assinatura').Value := VlAssinatura;
+    qry.ExecSQL;
+
+  finally
+    FreeAndNil(qry);
+  end;
+end;
+
+procedure TDmGlobal.WebhookNovoPagamento(StripeCustomerID: string);
+var
+  qry: TFDQuery;
+begin
+  try
+    qry := TFDQuery.Create(nil);
+    qry.Connection := Conn;
+
+    qry.SQL.Add('update usuario set dt_termino_acesso = :dt_termino_acesso, status = :status ');
+    qry.SQL.Add('where stripe_cliente_id = :stripe_cliente_id');
+    qry.ParamByName('stripe_cliente_id').Value := StripeCustomerID;
+    qry.ParamByName('dt_termino_acesso').Value := FormatDateTime('yyyy-mm-dd', IncMonth(date));
+    qry.ParamByName('status').Value := 'ATIVO';
+    qry.ExecSQL;
+
+  finally
+    FreeAndNil(qry);
+  end;
+end;
+
+procedure TDmGlobal.CancelarAssinatura(id_usuario: integer);
+var
+  qry: TFDQuery;
+begin
+  try
+    qry := TFDQuery.Create(nil);
+    qry.Connection := Conn;
+
+    qry.SQL.Add('update usuario set status = :status, stripe_assinatura_id = :stripe_assinatura_id ');
+    qry.SQL.Add('where id_usuario = :id_usuario');
+
+    qry.ParamByName('stripe_assinatura_id').Value := '';
+    qry.ParamByName('status').Value := 'INATIVO';
+    qry.ParamByName('id_usuario').Value := id_usuario;
+    qry.ExecSQL;
+
+  finally
+    FreeAndNil(qry);
+  end;
+end;
+
+
 
 
 end.

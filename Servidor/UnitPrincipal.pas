@@ -5,10 +5,12 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
-  DataSet.Serialize.Config;
+  DataSet.Serialize.Config, FMX.Memo.Types, FMX.Controls.Presentation,
+  FMX.ScrollBox, FMX.Memo;
 
 type
   TFrmPrincipal = class(TForm)
+    Memo1: TMemo;
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }

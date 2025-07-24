@@ -297,6 +297,7 @@
         <DCCReference Include="Services\Services.Lancamento.pas"/>
         <DCCReference Include="Controllers\Controllers.Stripe.pas"/>
         <DCCReference Include="Utils\uStripe.pas"/>
+        <DCCReference Include="Services\Services.Stripe.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

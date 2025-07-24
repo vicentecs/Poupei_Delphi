@@ -14,7 +14,8 @@ uses
   Controllers.Lancamento in 'Controllers\Controllers.Lancamento.pas',
   Services.Lancamento in 'Services\Services.Lancamento.pas',
   Controllers.Stripe in 'Controllers\Controllers.Stripe.pas',
-  uStripe in 'Utils\uStripe.pas';
+  uStripe in 'Utils\uStripe.pas',
+  Services.Stripe in 'Services\Services.Stripe.pas';
 
 {$R *.res}
 
