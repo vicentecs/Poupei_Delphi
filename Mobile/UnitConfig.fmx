@@ -283,6 +283,7 @@ object FrmConfig: TFrmConfig
     Size.Height = 70.000000000000000000
     Size.PlatformDefault = False
     Stroke.Color = xFFE6E6E6
+    OnClick = rectMenuAssinaturaClick
     object Image5: TImage
       MultiResBitmap.Height = 64
       MultiResBitmap.Width = 64

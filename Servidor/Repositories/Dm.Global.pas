@@ -50,6 +50,9 @@ type
 var
   DmGlobal: TDmGlobal;
 
+Const
+  NUM_DIAS_DEMONSTRACAO = 7;
+
 implementation
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
@@ -187,7 +190,10 @@ begin
     qry := TFDQuery.Create(nil);
     qry.Connection := Conn;
 
-    qry.SQL.Add('select id_usuario, nome, email, dt_cadastro, status from usuario ');
+    qry.SQL.Add('select id_usuario, nome, email, dt_cadastro, status,');
+    qry.SQL.Add('stripe_assinatura_id, stripe_cliente_id, vl_assinatura, ');
+    qry.SQL.Add('dt_termino_acesso, current_date as dt_referencia');
+    qry.SQL.Add('from usuario ');
     qry.SQL.Add('where email = :email and senha = :senha');
 
     qry.ParamByName('email').Value := email;
@@ -210,14 +216,19 @@ begin
     qry := TFDQuery.Create(nil);
     qry.Connection := Conn;
 
-    qry.SQL.Add('insert into usuario(nome, email, senha, dt_cadastro, status)');
-    qry.SQL.Add('values(:nome, :email, :senha, current_timestamp, :status)');
-    qry.SQL.Add('returning id_usuario, nome, email, dt_cadastro, status');
+    qry.SQL.Add('insert into usuario(nome, email, senha, dt_cadastro, status, dt_termino_acesso)');
+    qry.SQL.Add('values(:nome, :email, :senha, current_timestamp, :status, :dt_termino_acesso)');
+    qry.SQL.Add('returning id_usuario, nome, email, dt_cadastro, status,');
+    qry.SQL.Add('stripe_assinatura_id, stripe_cliente_id, vl_assinatura,');
+    qry.SQL.Add('dt_termino_acesso, current_date as dt_referencia');
 
     qry.ParamByName('nome').Value := nome;
     qry.ParamByName('email').Value := email;
     qry.ParamByName('senha').Value := senha;
-    qry.ParamByName('status').Value := 'TESTE'; // <-- TESTE DO APP POR 7 DIAS...
+    qry.ParamByName('status').Value := 'TESTE';
+    qry.ParamByName('dt_termino_acesso').Value :=
+              FormatDateTime('yyyy-mm-dd', date + NUM_DIAS_DEMONSTRACAO);
+
 
     qry.Active := true;
 
@@ -254,7 +265,10 @@ begin
     qry := TFDQuery.Create(nil);
     qry.Connection := Conn;
 
-    qry.SQL.Add('select id_usuario, nome, email, dt_cadastro, status from usuario ');
+    qry.SQL.Add('select id_usuario, nome, email, dt_cadastro, status,');
+    qry.SQL.Add('stripe_assinatura_id, stripe_cliente_id, vl_assinatura,');
+    qry.SQL.Add('dt_termino_acesso, current_date as dt_referencia');
+    qry.SQL.Add('from usuario ');
     qry.SQL.Add('where id_usuario = :id_usuario');
     qry.ParamByName('id_usuario').Value := id_usuario;
     qry.Active := true;

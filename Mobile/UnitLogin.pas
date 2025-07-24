@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.TabControl,
   FMX.Objects, FMX.Controls.Presentation, FMX.StdCtrls, FMX.Layouts, FMX.Edit,
-  uLoading, uSession;
+  uLoading, uSession, uFunctions;
 
 type
   TFrmLogin = class(TForm)
@@ -49,6 +49,7 @@ type
   private
     procedure OpenMainForm;
     procedure TerminateLogin(Sender: TObject);
+    procedure OpenFormAssinatura;
     { Private declarations }
   public
     { Public declarations }
@@ -61,7 +62,7 @@ implementation
 
 {$R *.fmx}
 
-uses UnitPrincipal, Dm.Global;
+uses UnitPrincipal, Dm.Global, UnitAssinatura;
 
 procedure TFrmLogin.btnAcessarLoginClick(Sender: TObject);
 begin
@@ -76,6 +77,14 @@ begin
   FrmPrincipal.Show;
 end;
 
+procedure TFrmLogin.OpenFormAssinatura;
+begin
+  if NOT Assigned(FrmAssinatura) then
+    Application.CreateForm(TFrmAssinatura, FrmAssinatura);
+
+  FrmAssinatura.Show;
+end;
+
 procedure TFrmLogin.TerminateLogin(Sender: TObject);
 begin
   TLoading.Hide;
@@ -88,13 +97,21 @@ begin
   end;
 
   // Login valido...
-  TSession.id_usuario := DmGlobal.TabUsuario.FieldByName('id_usuario').AsInteger;
-  TSession.nome := DmGlobal.TabUsuario.FieldByName('nome').AsString;
-  TSession.email := DmGlobal.TabUsuario.FieldByName('email').AsString;
-  TSession.token := DmGlobal.TabUsuario.FieldByName('token').AsString;
-  TSession.status := '??????';
+  with DmGlobal.TabUsuario do
+  begin
+    TSession.id_usuario := FieldByName('id_usuario').AsInteger;
+    TSession.nome := FieldByName('nome').AsString;
+    TSession.email := FieldByName('email').AsString;
+    TSession.token := FieldByName('token').AsString;
+    TSession.status := FieldByName('status').AsString;;
 
-  OpenMainForm;
+    if ShortStringUTCToDate(FieldByName('dt_termino_acesso').AsString) >=
+       ShortStringUTCToDate(FieldByName('dt_referencia').AsString) then
+      OpenMainForm
+    else
+      OpenFormAssinatura;
+  end;
+
 end;
 
 procedure TFrmLogin.btnCriarContaClick(Sender: TObject);

@@ -15,7 +15,8 @@ uses
   uLoading in 'Utils\uLoading.pas',
   uSession in 'Utils\uSession.pas',
   Dm.Global in 'DataModules\Dm.Global.pas' {DmGlobal: TDataModule},
-  uFunctions in 'Utils\uFunctions.pas';
+  uFunctions in 'Utils\uFunctions.pas',
+  UnitAssinatura in 'UnitAssinatura.pas' {FrmAssinatura};
 
 {$R *.res}
 
@@ -31,5 +32,6 @@ begin
   Application.CreateForm(TFrmPerfil, FrmPerfil);
   Application.CreateForm(TFrmSenha, FrmSenha);
   Application.CreateForm(TDmGlobal, DmGlobal);
+  Application.CreateForm(TFrmAssinatura, FrmAssinatura);
   Application.Run;
 end.

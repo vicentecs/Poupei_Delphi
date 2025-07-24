@@ -12,7 +12,9 @@ uses
   Services.Usuario in 'Services\Services.Usuario.pas',
   uMD5 in 'Utils\uMD5.pas',
   Controllers.Lancamento in 'Controllers\Controllers.Lancamento.pas',
-  Services.Lancamento in 'Services\Services.Lancamento.pas';
+  Services.Lancamento in 'Services\Services.Lancamento.pas',
+  Controllers.Stripe in 'Controllers\Controllers.Stripe.pas',
+  uStripe in 'Utils\uStripe.pas';
 
 {$R *.res}
 

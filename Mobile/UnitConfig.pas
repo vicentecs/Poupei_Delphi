@@ -37,6 +37,7 @@ type
     procedure rectMenuCategoriaClick(Sender: TObject);
     procedure rectMenuPerfilClick(Sender: TObject);
     procedure rectMenuSenhaClick(Sender: TObject);
+    procedure rectMenuAssinaturaClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -50,7 +51,7 @@ implementation
 
 {$R *.fmx}
 
-uses UnitCategoria, UnitPerfil, UnitSenha;
+uses UnitCategoria, UnitPerfil, UnitSenha, UnitAssinatura;
 
 procedure TFrmConfig.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
@@ -61,6 +62,14 @@ end;
 procedure TFrmConfig.imgFecharClick(Sender: TObject);
 begin
   close;
+end;
+
+procedure TFrmConfig.rectMenuAssinaturaClick(Sender: TObject);
+begin
+  if NOT Assigned(FrmAssinatura) then
+    Application.CreateForm(TFrmAssinatura, FrmAssinatura);
+
+  FrmAssinatura.Show;
 end;
 
 procedure TFrmConfig.rectMenuCategoriaClick(Sender: TObject);
