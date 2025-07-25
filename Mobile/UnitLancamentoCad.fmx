@@ -162,10 +162,11 @@ object FrmLancamentoCad: TFrmLancamentoCad
         XRadius = 6.000000000000000000
         YRadius = 6.000000000000000000
         object lblReceita: TLabel
+          Cursor = crHandPoint
           StyledSettings = [Family, Style]
           HitTest = True
           Position.X = 15.000000000000000000
-          Position.Y = 16.000000000000000000
+          Position.Y = 10.000000000000000000
           Size.Width = 59.000000000000000000
           Size.Height = 19.000000000000000000
           Size.PlatformDefault = False
@@ -176,45 +177,33 @@ object FrmLancamentoCad: TFrmLancamentoCad
           OnClick = lblReceitaClick
         end
         object lblDespesa: TLabel
+          Cursor = crHandPoint
           StyledSettings = [Family, Style]
           HitTest = True
-          Position.X = 82.000000000000000000
-          Position.Y = 17.000000000000000000
+          Position.X = 83.000000000000000000
+          Position.Y = 11.000000000000000000
           Size.Width = 70.000000000000000000
           Size.Height = 19.000000000000000000
           Size.PlatformDefault = False
           TextSettings.Font.Size = 16.000000000000000000
           TextSettings.FontColor = xFF959595
+          TextSettings.HorzAlign = Center
           Text = 'Despesa'
           TabOrder = 2
           OnClick = lblDespesaClick
         end
       end
     end
-    object cmbCategoria: TComboBox
-      Align = Top
-      Items.Strings = (
-        'Farm'#225'cia'
-        'Mercado'
-        'Padaria'
-        'Posto')
-      Margins.Top = 20.000000000000000000
-      Position.Y = 112.000000000000000000
-      Size.Width = 360.000000000000000000
-      Size.Height = 32.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 2
-    end
     object dtLanc: TDateEdit
       Date = 45853.000000000000000000
       Align = Top
       Margins.Top = 20.000000000000000000
-      Position.Y = 164.000000000000000000
+      Position.Y = 182.000000000000000000
       Size.Width = 360.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyledSettings = [Family, Style, FontColor]
-      TabOrder = 3
+      TabOrder = 2
       TextSettings.Font.Size = 14.000000000000000000
     end
     object Layout4: TLayout
@@ -223,7 +212,7 @@ object FrmLancamentoCad: TFrmLancamentoCad
       Size.Width = 360.000000000000000000
       Size.Height = 85.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 4
+      TabOrder = 3
       object imgDelete: TImage
         MultiResBitmap.Height = 64
         MultiResBitmap.Width = 64
@@ -271,6 +260,58 @@ object FrmLancamentoCad: TFrmLancamentoCad
         Size.PlatformDefault = False
         Visible = False
         OnClick = imgDeleteClick
+      end
+    end
+    object rectCategoria: TRectangle
+      Align = Top
+      Fill.Color = claWhite
+      Margins.Top = 20.000000000000000000
+      Position.Y = 112.000000000000000000
+      Size.Width = 360.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Color = claLightgray
+      XRadius = 4.000000000000000000
+      YRadius = 4.000000000000000000
+      OnClick = rectCategoriaClick
+      object lblCategoria: TLabel
+        Align = Client
+        StyledSettings = [Family, Style, FontColor]
+        Margins.Left = 5.000000000000000000
+        Size.Width = 330.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 14.000000000000000000
+        Text = 'Escolha uma categoria'
+        TabOrder = 0
+      end
+      object Image1: TImage
+        MultiResBitmap.Height = 32
+        MultiResBitmap.Width = 32
+        MultiResBitmap = <
+          item
+            Width = 32
+            Height = 32
+            PNG = {
+              89504E470D0A1A0A0000000D4948445200000020000000200806000000737A7A
+              F40000000473424954080808087C086488000000F3494441545885EDD7310AC2
+              3014C6F17FD5451074501737C10338EB05BCB07A177171F214AD435F3060115F
+              DEA72898A5214DFAFD48218FC08FB5EA1BC2E7D69760BC1F59030BEB1F801A68
+              22809E737E933D77B63EB4137DC7DC0AB8D2FE82A12156C0F9538084B828115E
+              801C510290224A01324404204144016184029023665E840A508C50028A106A40
+              8E980023432C8153D7646F2DF0B454379E56CE8138B4B2E00DED0E343676CCDE
+              3D2C7857781ADBDB7867D9560152F81618BF1AAE0214872B00A1F028201C1E01
+              48C24B01B2F0128034DC0B908783EF286E68EF05B270F01FC535F75D0B877B5B
+              0A9E22BC9AFDDB0DF9C8577CB25FC0810000000049454E44AE426082}
+            FileName = 'D:\Poupei\Mobile\Images\mais.png'
+          end>
+        Align = Right
+        HitTest = False
+        Margins.Right = 5.000000000000000000
+        Position.X = 335.000000000000000000
+        Size.Width = 20.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
       end
     end
   end

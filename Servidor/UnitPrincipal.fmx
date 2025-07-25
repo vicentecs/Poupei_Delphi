@@ -2,8 +2,8 @@ object FrmPrincipal: TFrmPrincipal
   Left = 0
   Top = 0
   Caption = 'Servidor Poupei'
-  ClientHeight = 465
-  ClientWidth = 778
+  ClientHeight = 315
+  ClientWidth = 543
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -13,11 +13,11 @@ object FrmPrincipal: TFrmPrincipal
     Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
     DataDetectorTypes = []
     Align = Client
-    Size.Width = 778.000000000000000000
-    Size.Height = 465.000000000000000000
+    Size.Width = 543.000000000000000000
+    Size.Height = 315.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
-    Viewport.Width = 774.000000000000000000
-    Viewport.Height = 461.000000000000000000
+    Viewport.Width = 539.000000000000000000
+    Viewport.Height = 311.000000000000000000
   end
 end

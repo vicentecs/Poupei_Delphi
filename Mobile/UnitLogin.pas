@@ -47,6 +47,7 @@ type
     procedure btnLoginClick(Sender: TObject);
     procedure btnCriarContaClick(Sender: TObject);
   private
+    Fsenha: string;
     procedure OpenMainForm;
     procedure TerminateLogin(Sender: TObject);
     procedure OpenFormAssinatura;
@@ -74,7 +75,9 @@ begin
   if NOT Assigned(FrmPrincipal) then
     Application.CreateForm(TFrmPrincipal, FrmPrincipal);
 
+  Application.MainForm := FrmPrincipal;
   FrmPrincipal.Show;
+  FrmLogin.Close;
 end;
 
 procedure TFrmLogin.OpenFormAssinatura;
@@ -99,11 +102,22 @@ begin
   // Login valido...
   with DmGlobal.TabUsuario do
   begin
+    DmGlobal.InserirUsuarioLocal(FieldByName('id_usuario').AsInteger,
+                  FieldByName('nome').AsString,
+                  FieldByName('email').AsString,
+                  Fsenha,
+                  FieldByName('token').AsString,
+                  FieldByName('status').AsString,
+                  FieldByName('stripe_cliente_id').AsString,
+                  FieldByName('stripe_assinatura_id').AsString);
+
     TSession.id_usuario := FieldByName('id_usuario').AsInteger;
     TSession.nome := FieldByName('nome').AsString;
     TSession.email := FieldByName('email').AsString;
     TSession.token := FieldByName('token').AsString;
-    TSession.status := FieldByName('status').AsString;;
+    TSession.status := FieldByName('status').AsString;
+    TSession.stripe_cliente_id := FieldByName('stripe_cliente_id').AsString;
+    TSession.stripe_assinatura_id := FieldByName('stripe_assinatura_id').AsString;
 
     if ShortStringUTCToDate(FieldByName('dt_termino_acesso').AsString) >=
        ShortStringUTCToDate(FieldByName('dt_referencia').AsString) then
@@ -122,6 +136,7 @@ begin
     exit;
   end;
 
+  Fsenha := edtContaSenha.Text;
   TLoading.Show(FrmLogin);
 
   TLoading.ExecuteThread(procedure
@@ -134,19 +149,42 @@ end;
 
 procedure TFrmLogin.btnLoginClick(Sender: TObject);
 begin
+  Fsenha := edtSenha.Text;
   TLoading.Show(FrmLogin);
 
   TLoading.ExecuteThread(procedure
   begin
-
     DmGlobal.Login(edtEmail.Text, edtSenha.Text);
+
+    DmGlobal.ExcluirUsuarioLocal;
   end,
   TerminateLogin);
 end;
 
 procedure TFrmLogin.FormShow(Sender: TObject);
+var
+  email, senha: string;
 begin
   TabControl.ActiveTab := TabBoasVindas;
+
+  // Descobrir se ele ja esta logado...
+  try
+    DmGlobal.ListarUsuarioLocal;
+
+    email := DmGlobal.qryUsuario.FieldByName('email').AsString;
+    senha := DmGlobal.qryUsuario.FieldByName('senha').AsString;
+
+    if (email <> '') and (senha <> '') then
+    begin
+      TabControl.ActiveTab := TabLogin;
+      edtEmail.Text := email;
+      edtSenha.Text := senha;
+      btnLoginClick(Sender);
+    end;
+
+  except on ex:exception do
+    showmessage(ex.Message);
+  end;
 end;
 
 procedure TFrmLogin.Label5Click(Sender: TObject);

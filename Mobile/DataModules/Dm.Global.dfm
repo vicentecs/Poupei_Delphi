@@ -35,4 +35,19 @@ object DmGlobal: TDmGlobal
     Left = 280
     Top = 48
   end
+  object Conn: TFDConnection
+    Params.Strings = (
+      'LockingMode=Normal'
+      'DriverID=SQLite')
+    LoginPrompt = False
+    AfterConnect = ConnAfterConnect
+    BeforeConnect = ConnBeforeConnect
+    Left = 80
+    Top = 168
+  end
+  object qryUsuario: TFDQuery
+    Connection = Conn
+    Left = 176
+    Top = 168
+  end
 end

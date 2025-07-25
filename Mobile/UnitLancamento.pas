@@ -110,7 +110,7 @@ end;
 
 procedure TFrmLancamento.NavegacaoMes(param: integer);
 begin
-  FData := IncMonth(FData, param);
+  FData.AddMonth(param);
   ListarLancamentos;
 end;
 

@@ -5,11 +5,10 @@
         <FrameworkType>FMX</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
-        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <Platform Condition="'$(Platform)'==''">Android</Platform>
         <TargetedPlatforms>558099</TargetedPlatforms>
         <AppType>Application</AppType>
         <MainSource>Poupei.dpr</MainSource>
-        <ProjectName Condition="'$(ProjectName)'==''">Poupei</ProjectName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -326,6 +325,7 @@
             <Form>FrmAssinatura</Form>
             <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="Utils\uCombobox.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

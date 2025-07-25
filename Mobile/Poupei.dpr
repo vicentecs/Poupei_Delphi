@@ -16,7 +16,8 @@ uses
   uSession in 'Utils\uSession.pas',
   Dm.Global in 'DataModules\Dm.Global.pas' {DmGlobal: TDataModule},
   uFunctions in 'Utils\uFunctions.pas',
-  UnitAssinatura in 'UnitAssinatura.pas' {FrmAssinatura};
+  UnitAssinatura in 'UnitAssinatura.pas' {FrmAssinatura},
+  uCombobox in 'Utils\uCombobox.pas';
 
 {$R *.res}
 

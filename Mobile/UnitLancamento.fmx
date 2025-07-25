@@ -469,13 +469,12 @@ object FrmLancamento: TFrmLancamento
       end
       object lblTotRec: TLabel
         StyledSettings = [Family]
-        Position.X = 1.000000000000000000
+        Position.X = -3.000000000000000000
         Position.Y = 19.000000000000000000
-        Size.Width = 80.000000000000000000
+        Size.Width = 86.000000000000000000
         Size.Height = 19.000000000000000000
         Size.PlatformDefault = False
-        TextSettings.Font.Size = 14.000000000000000000
-        TextSettings.Font.StyleExt = {00060000000000000004000000}
+        TextSettings.Font.Size = 13.000000000000000000
         TextSettings.FontColor = claWhite
         TextSettings.HorzAlign = Trailing
         Text = '3.857,00'
@@ -496,13 +495,12 @@ object FrmLancamento: TFrmLancamento
       end
       object lblTotDesp: TLabel
         StyledSettings = [Family]
-        Position.X = 89.000000000000000000
+        Position.X = 85.000000000000000000
         Position.Y = 19.000000000000000000
-        Size.Width = 80.000000000000000000
+        Size.Width = 86.000000000000000000
         Size.Height = 19.000000000000000000
         Size.PlatformDefault = False
-        TextSettings.Font.Size = 14.000000000000000000
-        TextSettings.Font.StyleExt = {00060000000000000004000000}
+        TextSettings.Font.Size = 13.000000000000000000
         TextSettings.FontColor = claWhite
         TextSettings.HorzAlign = Trailing
         Text = '3.857,00'
@@ -523,13 +521,12 @@ object FrmLancamento: TFrmLancamento
       end
       object lblSaldo: TLabel
         StyledSettings = [Family]
-        Position.X = 177.000000000000000000
+        Position.X = 173.000000000000000000
         Position.Y = 19.000000000000000000
-        Size.Width = 80.000000000000000000
+        Size.Width = 86.000000000000000000
         Size.Height = 19.000000000000000000
         Size.PlatformDefault = False
-        TextSettings.Font.Size = 14.000000000000000000
-        TextSettings.Font.StyleExt = {00060000000000000004000000}
+        TextSettings.Font.Size = 13.000000000000000000
         TextSettings.FontColor = claWhite
         TextSettings.HorzAlign = Trailing
         Text = '3.857,00'

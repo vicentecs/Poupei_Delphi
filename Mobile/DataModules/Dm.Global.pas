@@ -8,14 +8,21 @@ uses
   DataSet.Serialize.Config, System.JSON, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  uSession;
+  uSession, FireDAC.UI.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool,
+  FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef,
+  FireDAC.Stan.ExprFuncs, FireDAC.Phys.SQLiteWrapper.Stat, FireDAC.FMXUI.Wait,
+  System.IOUtils, FireDAC.DApt;
 
 type
   TDmGlobal = class(TDataModule)
     TabUsuario: TFDMemTable;
     TabLanc: TFDMemTable;
     TabCategoria: TFDMemTable;
+    Conn: TFDConnection;
+    qryUsuario: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
+    procedure ConnBeforeConnect(Sender: TObject);
+    procedure ConnAfterConnect(Sender: TObject);
   private
     { Private declarations }
   public
@@ -37,6 +44,13 @@ type
     procedure InserirCategoria(descricao: string);
     procedure ListarCategoriaId(id_categoria: integer);
     procedure ExcluirCategoria(id_categoria: integer);
+    function GerarURLCheckout(): string;
+    procedure CancelarAssinatura;
+    procedure InserirUsuarioLocal(id_usuario: integer; nome, email, senha,
+                                  token, status, stripe_cliente_id,
+                                  stripe_assinatura_id: string);
+    procedure ListarUsuarioLocal;
+    procedure ExcluirUsuarioLocal;
   end;
 
 var
@@ -62,6 +76,8 @@ procedure TDmGlobal.DataModuleCreate(Sender: TObject);
 begin
   TDataSetSerializeConfig.GetInstance.CaseNameDefinition := cndLower;
   TDataSetSerializeConfig.GetInstance.Import.DecimalSeparator := '.';
+
+  Conn.Connected := true;
 end;
 
 procedure TDmGlobal.Login(email, senha: string);
@@ -92,6 +108,31 @@ begin
   finally
     FreeAndNil(json);
   end;
+end;
+
+procedure TDmGlobal.ConnAfterConnect(Sender: TObject);
+begin
+  Conn.ExecSQL('create table if not exists USUARIO ( ' +
+                            'ID_USUARIO    INTEGER NOT NULL PRIMARY KEY, ' +
+                            'NOME           VARCHAR (100), ' +
+                            'EMAIL          VARCHAR (100), ' +
+                            'SENHA          VARCHAR (100), ' +
+                            'TOKEN          VARCHAR (100), ' +
+                            'STATUS         VARCHAR (20), ' +
+                            'STRIPE_CLIENTE_ID VARCHAR (1000), ' +
+                            'STRIPE_ASSINATURA_ID VARCHAR (1000));'
+                );
+end;
+
+procedure TDmGlobal.ConnBeforeConnect(Sender: TObject);
+begin
+  Conn.DriverName := 'SQLite';
+
+  {$IFDEF MSWINDOWS}
+  Conn.Params.Values['Database'] := System.SysUtils.GetCurrentDir + '\poupei.db';
+  {$ELSE}
+  Conn.Params.Values['Database'] := TPath.Combine(TPath.GetDocumentsPath, 'poupei.db');
+  {$ENDIF}
 end;
 
 procedure TDmGlobal.CriarConta(nome, email, senha: string);
@@ -425,5 +466,97 @@ begin
     raise Exception.Create(resp.Content);
 
 end;
+
+function TDmGlobal.GerarURLCheckout(): string;
+var
+  resp: IResponse;
+  json: TJsonObject;
+begin
+  if TabUsuario.Active then
+    TabUsuario.EmptyDataSet;
+
+  TabUsuario.FieldDefs.Clear;
+
+  json := TJsonObject.Create;
+  try
+    json.AddPair('customer', TSession.stripe_cliente_id);
+
+    resp := TRequest.New.BaseURL(BASE_URL)
+                        .Resource('/assinaturas/url')
+                        .AddBody(json.ToJSON)
+                        .Accept('application/json')
+                        .TokenBearer(TSession.token)
+                        .Adapters(TDataSetSerializeAdapter.New(TabUsuario))
+                        .post;
+
+    if resp.StatusCode <> 200 then
+      raise Exception.Create(resp.Content);
+
+    Result := TabUsuario.FieldByName('url').AsString;
+
+  finally
+    FreeAndNil(json);
+  end;
+end;
+
+procedure TDmGlobal.CancelarAssinatura;
+var
+  resp: IResponse;
+  json: TJsonObject;
+begin
+  json := TJsonObject.Create;
+  try
+    json.AddPair('stripe_assinatura_id', TSession.stripe_assinatura_id);
+
+    resp := TRequest.New.BaseURL(BASE_URL)
+                        .Resource('/assinaturas/cancelamento')
+                        .AddBody(json.ToJSON)
+                        .Accept('application/json')
+                        .TokenBearer(TSession.token)
+                        .post;
+
+    if resp.StatusCode <> 200 then
+      raise Exception.Create(resp.Content);
+
+  finally
+    FreeAndNil(json);
+  end;
+end;
+
+procedure TDmGlobal.InserirUsuarioLocal(id_usuario: integer;
+                                        nome, email, senha, token, status,
+                                        stripe_cliente_id, stripe_assinatura_id: string);
+begin
+    qryUsuario.Active := false;
+    qryUsuario.SQL.Clear;
+    qryUsuario.SQL.Add('insert into usuario(id_usuario, nome, email, senha, token, status, stripe_cliente_id, stripe_assinatura_id)');
+    qryUsuario.SQL.Add('values(:id_usuario, :nome, :email, :senha, :token, :status, :stripe_cliente_id, :stripe_assinatura_id)');
+    qryUsuario.ParamByName('id_usuario').Value := id_usuario;
+    qryUsuario.ParamByName('nome').Value := nome;
+    qryUsuario.ParamByName('email').Value := email;
+    qryUsuario.ParamByName('senha').Value := senha;
+    qryUsuario.ParamByName('token').Value := token;
+    qryUsuario.ParamByName('status').Value := status;
+    qryUsuario.ParamByName('stripe_cliente_id').Value := stripe_cliente_id;
+    qryUsuario.ParamByName('stripe_assinatura_id').Value := stripe_assinatura_id;
+    qryUsuario.ExecSQL;
+end;
+
+procedure TDmGlobal.ListarUsuarioLocal;
+begin
+    qryUsuario.Active := false;
+    qryUsuario.SQL.Clear;
+    qryUsuario.SQL.Add('select * from usuario');
+    qryUsuario.active := true;
+end;
+
+procedure TDmGlobal.ExcluirUsuarioLocal;
+begin
+    qryUsuario.Active := false;
+    qryUsuario.SQL.Clear;
+    qryUsuario.SQL.Add('delete from usuario');
+    qryUsuario.ExecSQL;
+end;
+
 
 end.

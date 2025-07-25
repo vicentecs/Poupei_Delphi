@@ -38,7 +38,9 @@ type
     procedure rectMenuPerfilClick(Sender: TObject);
     procedure rectMenuSenhaClick(Sender: TObject);
     procedure rectMenuAssinaturaClick(Sender: TObject);
+    procedure rectMenuSairClick(Sender: TObject);
   private
+    procedure Logout;
     { Private declarations }
   public
     { Public declarations }
@@ -51,7 +53,8 @@ implementation
 
 {$R *.fmx}
 
-uses UnitCategoria, UnitPerfil, UnitSenha, UnitAssinatura;
+uses UnitCategoria, UnitPerfil, UnitSenha, UnitAssinatura, Dm.Global, UnitLogin,
+  UnitPrincipal;
 
 procedure TFrmConfig.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
@@ -86,6 +89,30 @@ begin
     Application.CreateForm(TFrmPerfil, FrmPerfil);
 
   FrmPerfil.Show;
+end;
+
+procedure TFrmConfig.Logout;
+begin
+  try
+    DmGlobal.ExcluirUsuarioLocal;
+
+    if NOT Assigned(FrmLogin) then
+      Application.CreateForm(TFrmLogin, FrmLogin);
+
+    Application.MainForm := FrmLogin;
+    FrmLogin.Show;
+
+    FrmPrincipal.Close;
+    FrmConfig.Close;
+
+  except on ex:exception do
+    showmessage(ex.Message);
+  end;
+end;
+
+procedure TFrmConfig.rectMenuSairClick(Sender: TObject);
+begin
+  Logout;
 end;
 
 procedure TFrmConfig.rectMenuSenhaClick(Sender: TObject);
